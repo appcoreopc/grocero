@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:grocero/dialogs/locationdialog.dart';
-
+import 'package:geolocator/geolocator.dart';
 import 'locations.dart' as locations;
 
 class MyLocationChooser extends StatefulWidget {
@@ -14,13 +14,18 @@ class _MyLocationChooserState extends State<MyLocationChooser> {
   bool isLocationConfigured = false; 
 
   final navigatorKey = GlobalKey<NavigatorState>();
+  double long = 0; 
+  double lat = 0;
+  var cameraLongLat = LatLng(0, 0);
 
   Future<void> _onMapCreated(GoogleMapController controller) async {
     final googleOffices = await locations.getGoogleOffices();
-
-   
+    Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 
     setState(() {
+
+      cameraLongLat = LatLng(position.longitude, position.longitude);
+      
       _markers.clear();
       for (final office in googleOffices.offices) {
         final marker = Marker(
@@ -40,6 +45,7 @@ class _MyLocationChooserState extends State<MyLocationChooser> {
   Widget build(BuildContext _context) {
 
     final context = navigatorKey.currentState.overlay.context;
+
     if (!isLocationConfigured) 
     {
         final dialog = LocationDialog('Location', 'Use current location?');
@@ -50,7 +56,7 @@ class _MyLocationChooserState extends State<MyLocationChooser> {
         navigatorKey: navigatorKey,
         home: Scaffold(
           appBar: AppBar(
-            title: const Text('Shop locations'),
+            title: const Text('Set current location'),
             backgroundColor: Colors.green[700],
           ),
           body: Stack(
@@ -58,7 +64,7 @@ class _MyLocationChooserState extends State<MyLocationChooser> {
               GoogleMap(
                 onMapCreated: _onMapCreated,
                 initialCameraPosition: CameraPosition(
-                  target: const LatLng(0, 0),
+                  target: cameraLongLat,
                   zoom: 2,
                 ),
                 markers: _markers.values.toSet(),
