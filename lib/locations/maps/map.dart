@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:grocero/dialogs/locationdialog.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:grocero/services/mockmarkerservice.dart';
+import 'package:grocero/models/productargument.dart';
+import 'package:grocero/products/productdetailpage.dart';
+import 'package:grocero/products/productlist.dart';
 
 class MyLocationChooser extends StatefulWidget {
   @override
@@ -16,24 +18,30 @@ class _MyLocationChooserState extends State<MyLocationChooser> {
   LatLng _cameraLongLat = LatLng(0, 0);
   Completer<GoogleMapController> _controller = Completer();
 
-
   bool isLocationConfigured = false;
   double long = 0;
   double lat = 0;
 
   void _browseShopListing(String markerId) {
-    //Navigator.of(context).push()
-    print("Getting ontap event" + markerId);
 
+    if (navigatorKey.currentContext != null) {
+      var context = navigatorKey.currentState.overlay.context;
+
+      Navigator.pushNamed(
+        context,
+        ProductListingPage.routeName,
+        arguments: ProductArgument(
+          markerId,
+          'This message is extracted in the onGenerateRoute function.',
+        ),
+      );
+    }
   }
 
   Future<void> _onMapCreated(GoogleMapController controller) async {
     _controller.complete(controller);
-  
-    _setCameraToCurrentPosition();
 
-    // final shopMarkers =
-    //     MockMarkerService().GetShopByLocation(_browseShopListing);
+    _setCameraToCurrentPosition();
 
     final shopMarkers = GetShopByLocation();
 
@@ -83,41 +91,70 @@ class _MyLocationChooserState extends State<MyLocationChooser> {
     }
 
     return MaterialApp(
-      navigatorKey: navigatorKey,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Set current location'),
-          backgroundColor: Colors.green[700],
-        ),
-        body: Stack(
-          children: <Widget>[
-            GoogleMap(
-              onMapCreated: _onMapCreated,
-              initialCameraPosition: CameraPosition(
-                target: _cameraLongLat,
-                zoom: 2,
+        navigatorKey: navigatorKey,
+        home: Scaffold(
+          appBar: AppBar(
+            title: const Text('Set current location'),
+            backgroundColor: Colors.green[700],
+          ),
+          body: Stack(
+            children: <Widget>[
+              GoogleMap(
+                onMapCreated: _onMapCreated,
+                initialCameraPosition: CameraPosition(
+                  target: _cameraLongLat,
+                  zoom: 2,
+                ),
+                markers: _markers.values.toSet(),
               ),
-              markers: _markers.values.toSet(),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
+        // routes: {
+        //   ExtractArgumentsScreen.routeName: (context) =>
+        //       ExtractArgumentsScreen(),
+        // },
+        onGenerateRoute: (settings) {
+          if (settings.name == ProductListingPage.routeName) {
+            // Cast the arguments to the correct type: ScreenArguments.
+            final ProductArgument args = settings.arguments;
+            return MaterialPageRoute(
+              builder: (BuildContext context) => ProductListingPage(
+                  title: args.title, message : args.message),
+              maintainState: true,
+              fullscreenDialog: false,
+            );
+          } else if (settings.name == ProductDetailPage.routeName) {
+            final ProductArgument args = settings.arguments;
+
+            return MaterialPageRoute(
+              builder: (BuildContext context) => ProductDetailPage(title: args.title, message : args.message),
+              maintainState: true,
+              fullscreenDialog: false,
+            );
+          } else {
+            return null;
+          }
+        });
   }
 
   Map<String, Marker> GetShopByLocation() {
-
-      return Map.from({
-
-        "1" : Marker(markerId: MarkerId("1"), position : LatLng(-36.734999,174.70),infoWindow:  InfoWindow(title: 'Cafe Hassle'), onTap: () => _browseShopListing("1")),
-
-        "2" :  Marker(markerId: MarkerId("2"), position : LatLng(-36.734999,174.71680),
-        infoWindow:  InfoWindow(title: 'Cafe'), onTap: () => _browseShopListing("2")),
-
-        "3" :  Marker(markerId: MarkerId("3"), position : LatLng(-36.734999,174.712),
-        infoWindow:  InfoWindow(title: 'ShopMask'), onTap: () => _browseShopListing("3")
-        )
-
-      });
+    return Map.from({
+      "1": Marker(
+          markerId: MarkerId("1"),
+          position: LatLng(-36.734999, 174.70),
+          infoWindow: InfoWindow(title: 'Cafe Hassle'),
+          onTap: () => _browseShopListing("1")),
+      "2": Marker(
+          markerId: MarkerId("2"),
+          position: LatLng(-36.734999, 174.71680),
+          infoWindow: InfoWindow(title: 'Cafe'),
+          onTap: () => _browseShopListing("2")),
+      "3": Marker(
+          markerId: MarkerId("3"),
+          position: LatLng(-36.734999, 174.712),
+          infoWindow: InfoWindow(title: 'ShopMask'),
+          onTap: () => _browseShopListing("3"))
+    });
   }
 }

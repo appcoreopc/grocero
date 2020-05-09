@@ -1,41 +1,24 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:grocero/models/Article.dart';
-//import '../../service/httpservice.dart';
 
-class ImageListView extends StatefulWidget {
-
-  void initState() {
-    
-    print("imagelistview initstate");
-
-  }
-
-  @override
-  State<StatefulWidget> createState() => _ImageListViewState();
-}
-
-class _ImageListViewState extends State<ImageListView> {
-
-  Future<List<Article>> _futureNewsData;
+class ImageListViewState<T extends StatefulWidget> extends State<T> {
+  Future<List<ProductListingModel>> _futureNewsData;
 
   final TextStyle _titleFont =
       TextStyle(fontSize: 15.0, color: Colors.black.withOpacity(0.8));
 
   @override
   void initState() {
-
     super.initState();
 
     //_futureNewsData = NewsDataService().fetchNewsCategories();
-
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-        body: FutureBuilder<List<Article>>(
+        body: FutureBuilder<List<ProductListingModel>>(
           future: _futureNewsData,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
@@ -50,7 +33,7 @@ class _ImageListViewState extends State<ImageListView> {
         backgroundColor: Colors.black);
   }
 
-  Widget _buildNewsData(List<Article> newsData) {
+  Widget _buildNewsData(List<ProductListingModel> newsData) {
     return ListView.builder(
         itemCount: newsData.length,
         padding: const EdgeInsets.all(12.0),
@@ -60,7 +43,7 @@ class _ImageListViewState extends State<ImageListView> {
         });
   }
 
-  Widget _buildRow(Article newsData) {
+  Widget _buildRow(ProductListingModel newsData) {
     return Ink(
       child: ListTile(
         title: Text(newsData.title, style: _titleFont),

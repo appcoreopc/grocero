@@ -1,5 +1,5 @@
 
-class Article {
+class ProductListingModel {
   final String author;
   final String title;
   String description; 
@@ -7,7 +7,7 @@ class Article {
   String urlToImage;
   String content;
   
-  Article(this.author, this.title, this.description, this.content, this.urlToImage, this.url);
+  ProductListingModel(this.author, this.title, this.description, this.content, this.urlToImage, this.url);
 
   // factory Article.fromJson(Map<String, dynamic> json) {
   //   return Article(json['author'], 'b');
