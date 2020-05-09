@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 class LocationDialog extends StatelessWidget {
 
+  LocationDialog(this.title, this.content);
+
   String title; 
   String content;
-
-  LocationDialog(this.title, this.content);
 
   @override
   Widget build(BuildContext context) {
@@ -16,11 +16,18 @@ class LocationDialog extends StatelessWidget {
       actions: <Widget>[
         // usually buttons at the bottom of the dialog
         FlatButton(
+          child: Text("Add location"),
+          onPressed: () {
+            Navigator.of(context).pop();
+      
+          },
+        ),
+        FlatButton(
           child: Text("Close"),
           onPressed: () {
             Navigator.of(context).pop();
           },
-        ),
+        )
       ],
     );
   }
