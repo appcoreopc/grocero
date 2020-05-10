@@ -5,7 +5,7 @@ import 'package:grocero/dialogs/locationdialog.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:grocero/models/productargument.dart';
 import 'package:grocero/products/productdetailpage.dart';
-import 'package:grocero/products/productlist.dart';
+import 'package:grocero/products/productlistpage.dart';
 
 class MyLocationChooser extends StatefulWidget {
   @override
@@ -22,13 +22,13 @@ class _MyLocationChooserState extends State<MyLocationChooser> {
   double long = 0;
   double lat = 0;
 
-  void _browseShopListing(String markerId) {
+  void _viewShopListing(String markerId) {
 
     if (navigatorKey.currentContext != null) {
-      var context = navigatorKey.currentState.overlay.context;
+      var _mapcontext = navigatorKey.currentState.overlay.context;
 
       Navigator.pushNamed(
-        context,
+        _mapcontext,
         ProductListingPage.routeName,
         arguments: ProductArgument(
           markerId,
@@ -43,9 +43,10 @@ class _MyLocationChooserState extends State<MyLocationChooser> {
 
     _setCameraToCurrentPosition();
 
-    final shopMarkers = GetShopByLocation();
+    final shopMarkers = _GetShopByLocation();
 
     setState(() {
+
       _markers.clear();
       _markers = shopMarkers;
 
@@ -85,7 +86,7 @@ class _MyLocationChooserState extends State<MyLocationChooser> {
       var context = navigatorKey.currentState.overlay.context;
       if (!isLocationConfigured) {
         final locationDialog =
-            LocationDialog('Location', 'Use current location?');
+            LocationDialog('Configure Location', 'Use current location?');
         showDialog(context: context, builder: (x) => locationDialog);
       }
     }
@@ -110,13 +111,8 @@ class _MyLocationChooserState extends State<MyLocationChooser> {
             ],
           ),
         ),
-        // routes: {
-        //   ExtractArgumentsScreen.routeName: (context) =>
-        //       ExtractArgumentsScreen(),
-        // },
         onGenerateRoute: (settings) {
           if (settings.name == ProductListingPage.routeName) {
-            // Cast the arguments to the correct type: ScreenArguments.
             final ProductArgument args = settings.arguments;
             return MaterialPageRoute(
               builder: (BuildContext context) => ProductListingPage(
@@ -138,23 +134,24 @@ class _MyLocationChooserState extends State<MyLocationChooser> {
         });
   }
 
-  Map<String, Marker> GetShopByLocation() {
+  Map<String, Marker> _GetShopByLocation() {
+
     return Map.from({
       "1": Marker(
           markerId: MarkerId("1"),
           position: LatLng(-36.734999, 174.70),
           infoWindow: InfoWindow(title: 'Cafe Hassle'),
-          onTap: () => _browseShopListing("1")),
+          onTap: () => _viewShopListing("1")),
       "2": Marker(
           markerId: MarkerId("2"),
           position: LatLng(-36.734999, 174.71680),
           infoWindow: InfoWindow(title: 'Cafe'),
-          onTap: () => _browseShopListing("2")),
+          onTap: () => _viewShopListing("2")),
       "3": Marker(
           markerId: MarkerId("3"),
           position: LatLng(-36.734999, 174.712),
           infoWindow: InfoWindow(title: 'ShopMask'),
-          onTap: () => _browseShopListing("3"))
+          onTap: () => _viewShopListing("3"))
     });
   }
 }

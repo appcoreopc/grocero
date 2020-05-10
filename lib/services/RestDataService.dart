@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class RestDataService {
-  Future<List<T>> fetchNewsCategories<T>(
+
+  Future<List<T>> fetchData<T>(
       String targetUrl, String jsonTargetField) async {
+
     var result = List<T>();
     final response = await http.get(targetUrl);
 

@@ -1,39 +1,40 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:grocero/models/Article.dart';
+import 'package:grocero/models/productlistingmodel.dart';
+import 'package:grocero/services/mock/mockmarkerservice.dart';
+import 'package:grocero/style/appstyle.dart';
 
 class ImageListViewState<T extends StatefulWidget> extends State<T> {
-  Future<List<ProductListingModel>> _futureNewsData;
-
-  final TextStyle _titleFont =
-      TextStyle(fontSize: 15.0, color: Colors.black.withOpacity(0.8));
-
+  Future<List<ProductListingModel>> _futureDataSource;
+ 
   @override
   void initState() {
-    super.initState();
 
-    //_futureNewsData = NewsDataService().fetchNewsCategories();
+    super.initState();
+    _futureDataSource = MockDataService.GetProductListing();
   }
 
   @override
   Widget build(BuildContext context) {
+
+     _futureDataSource = MockDataService.GetProductListing();
+
     return Scaffold(
         body: FutureBuilder<List<ProductListingModel>>(
-          future: _futureNewsData,
+          future: _futureDataSource,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return _buildNewsData(snapshot.data);
+              return _buildProductListingData(snapshot.data);
             } else if (snapshot.hasError) {
               return Text("${snapshot.error}");
             }
-
             return CircularProgressIndicator();
           },
         ),
         backgroundColor: Colors.black);
   }
 
-  Widget _buildNewsData(List<ProductListingModel> newsData) {
+  Widget _buildProductListingData(List<ProductListingModel> newsData) {
     return ListView.builder(
         itemCount: newsData.length,
         padding: const EdgeInsets.all(12.0),
@@ -46,7 +47,7 @@ class ImageListViewState<T extends StatefulWidget> extends State<T> {
   Widget _buildRow(ProductListingModel newsData) {
     return Ink(
       child: ListTile(
-        title: Text(newsData.title, style: _titleFont),
+        title: Text(newsData.title, style: AppStyle.listViewFontStyle),
         subtitle: Padding(
             padding: EdgeInsets.fromLTRB(0, 12, 0, 12),
             child: Image.network(newsData.urlToImage)),
