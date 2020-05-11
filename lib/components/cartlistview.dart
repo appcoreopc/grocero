@@ -10,7 +10,7 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
   Future<List<ProductListingModel>> _futureDataSource;
   Map<String, int> productCount = Map<String, int>();
   int indexCountRecord = 0;
-  
+
   @override
   void initState() {
     super.initState();
@@ -39,14 +39,22 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
   }
 
   Widget _buildProductListingData(List<ProductListingModel> newsData) {
-  
-    return ListView.builder(
-        itemCount: newsData.length,
-        padding: const EdgeInsets.all(12.0),
-        itemBuilder: (context, index) {
-          if (index.isOdd) return Divider();
-          return _buildRow(newsData[index], index);
-        });
+    return Column(children: [
+      Expanded(
+          child: ListView.builder(
+              itemCount: newsData.length,
+              padding: const EdgeInsets.all(12.0),
+              itemBuilder: (context, index) {
+                if (index.isOdd) return Divider();
+                return _buildRow(newsData[index], index);
+              })),
+      FlatButton(
+        color: Colors.black,
+        textColor: Colors.grey,
+        child: Text('Proceed to checkout', style: AppStyle.checkoutFontContentFontStyle),
+        onPressed: () {},
+      )
+    ]);
   }
 
   Widget _buildRow(ProductListingModel productListingData, int index) {
@@ -63,8 +71,7 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
   }
 
   Column buildChildLayout(ProductListingModel productListingData, int index) {
-
-    var columnDataWidget = Column(children: <Widget>[
+    return Column(children: <Widget>[
       Image.network(productListingData.urlToImage),
       Padding(padding: EdgeInsets.all(Appconstant.ListViewPadding)),
       Text(productListingData.title, style: AppStyle.listViewContentFontStyle),
@@ -93,19 +100,6 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
         ],
       )
     ], crossAxisAlignment: CrossAxisAlignment.start);
-
-    // if (index == indexCountRecord) {
-    //   col.children.add(ButtonBar(
-    //     children: <Widget>[
-    //       FlatButton(
-    //         color: Colors.black,
-    //         child: const Text('Add'),
-    //         onPressed: () {
-    //           _addProduct(productListingData.title, 1);
-    //         },
-    //       )]));
-    // }
-    return columnDataWidget;
   }
 
   void _addProduct(String productName, int quantity) {

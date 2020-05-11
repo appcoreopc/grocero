@@ -7,4 +7,7 @@ class AppStyle {
 
  static final TextStyle listViewContentFontStyle =
       TextStyle(fontSize: 14.0, color: Colors.black);
+
+static final TextStyle checkoutFontContentFontStyle =
+      TextStyle(fontSize: 24.0, color: Colors.grey);
 }
