@@ -4,8 +4,6 @@ import 'package:grocero/navigations/navigationhelper.dart';
 import 'package:grocero/style/appstyle.dart';
 import '../Appconstant.dart';
 
-
-
 class CheckoutViewState<T extends StatefulWidget> extends State<T> {
   List<ProductListingModel> _customerOrderLists;
   Map<String, int> productCount = Map<String, int>();
@@ -13,10 +11,8 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-        body:
-             _buildCustomerCheckoutLayout(_customerOrderLists),
+        body: _buildCustomerCheckoutLayout(_customerOrderLists),
         backgroundColor: Colors.black,
         bottomNavigationBar:
             NavigationHelper().CreateNavigationBar(this.context));
@@ -24,42 +20,44 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
 
   Widget _buildCustomerCheckoutLayout(List<ProductListingModel> newsData) {
     return Column(children: [
-      Expanded(
-          child: 
-                 _buildRow("Deliver To", "Maggie")
-             ),
+      _buildCheckoutRowLayout("Customer Name", "Maggie", "Update"),
+      _buildCheckoutRowLayout("Contact", "Maggie", "Change"),
+      _buildCheckoutRowLayout("Address", "Maggie", "Change"),
+      _buildCheckoutRowLayout("Delivery Timee", "Maggie", "Change"),
       FlatButton(
         color: Colors.black,
         textColor: Colors.grey,
-        child: Text('Make payment',
-            style: AppStyle.checkoutFontContentFontStyle),
+        child:
+            Text('Make payment', style: AppStyle.checkoutFontContentFontStyle),
         onPressed: () {},
       )
     ]);
   }
 
-  Widget _buildRow(String title, String subtitle) {
+  Widget _buildCheckoutRowLayout(
+      String title, String subtitle, String commandString) {
     return Ink(
       child: ListTile(
-        title: Text(title,
-            style: AppStyle.listViewTitleFontStyle),
+        title: Text(title, style: AppStyle.listViewTitleFontStyle),
         subtitle: Padding(
             padding: EdgeInsets.fromLTRB(0, 12, 0, 12),
             child: buildChildLayout(title, subtitle)),
+        trailing: FlatButton(
+          child: Text(
+            commandString,
+          ),
+          onPressed: () => {},
+        ),
       ),
       color: Colors.grey,
     );
   }
 
-
   Column buildChildLayout(String title, String subtitle) {
     return Column(children: <Widget>[
-     
       Padding(padding: EdgeInsets.all(Appconstant.ListViewPadding)),
-      Text(title,
-          style: AppStyle.listViewContentFontStyle),
-      Text(subtitle,
-          style: AppStyle.listViewContentFontStyle),
+      Text(title, style: AppStyle.listViewContentFontStyle),
+      Text(subtitle, style: AppStyle.listViewContentFontStyle),
     ], crossAxisAlignment: CrossAxisAlignment.start);
   }
 
