@@ -1,18 +1,22 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:grocero/cart/cartpage.dart';
 import 'package:grocero/dialogs/locationdialog.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:grocero/models/productargument.dart';
-import 'package:grocero/products/productdetailpage.dart';
+import 'package:grocero/navigations/navigationhelper.dart';
 import 'package:grocero/products/productlistpage.dart';
 
 class MyLocationChooser extends StatefulWidget {
+  static String routeName = "MyLocationChooser";
+
   @override
   _MyLocationChooserState createState() => _MyLocationChooserState();
 }
 
 class _MyLocationChooserState extends State<MyLocationChooser> {
+  
   Map<String, Marker> _markers = {};
   final navigatorKey = GlobalKey<NavigatorState>();
   LatLng _cameraLongLat = LatLng(0, 0);
@@ -23,18 +27,16 @@ class _MyLocationChooserState extends State<MyLocationChooser> {
   double lat = 0;
 
   void _viewShopListing(String markerId) {
-
     if (navigatorKey.currentContext != null) {
       var _mapcontext = navigatorKey.currentState.overlay.context;
 
-      Navigator.pushNamed(
-        _mapcontext,
-        ProductListingPage.routeName,
-        arguments: ProductArgument(
-          markerId,
-          'This message is extracted in the onGenerateRoute function.',
-        ),
-      );
+      NavigationHelper.NavigateTo(
+          _mapcontext,
+          ProductListingPage.routeName,
+          ProductArgument(
+            markerId,
+            'This message is extracted in the onGenerateRoute function.',
+          ));
     }
   }
 
@@ -42,25 +44,11 @@ class _MyLocationChooserState extends State<MyLocationChooser> {
     _controller.complete(controller);
 
     _setCameraToCurrentPosition();
-
     final shopMarkers = _GetShopByLocation();
 
     setState(() {
-
       _markers.clear();
       _markers = shopMarkers;
-
-      // for (final office in shopMarkers) {
-      //   final marker = Marker(
-      //     markerId: MarkerId(office.markerId),
-      //     position: LatLng(office.lat, office.lng),
-      //     infoWindow: InfoWindow(
-      //       title: office.name,
-      //       snippet: office.address,
-      //     ),
-      //   );
-      //   _markers[office.name] = marker;
-      // }
     });
   }
 
@@ -82,14 +70,14 @@ class _MyLocationChooserState extends State<MyLocationChooser> {
 
   @override
   Widget build(BuildContext _context) {
-    if (navigatorKey.currentContext != null) {
-      var context = navigatorKey.currentState.overlay.context;
-      if (!isLocationConfigured) {
-        final locationDialog =
-            LocationDialog('Configure Location', 'Use current location?');
-        showDialog(context: context, builder: (x) => locationDialog);
-      }
-    }
+    // if (navigatorKey.currentContext != null) {
+    //   var context = navigatorKey.currentState.overlay.context;
+    //   if (!isLocationConfigured) {
+    //     final locationDialog =
+    //         LocationDialog('Configure Location', 'Use current location?');
+    //     showDialog(context: context, builder: (x) => locationDialog);
+    //   }
+    // }
 
     return MaterialApp(
         navigatorKey: navigatorKey,
@@ -110,32 +98,42 @@ class _MyLocationChooserState extends State<MyLocationChooser> {
               ),
             ],
           ),
+          bottomNavigationBar: NavigationHelper().CreateNavigationBar(this.context),
         ),
         onGenerateRoute: (settings) {
-          if (settings.name == ProductListingPage.routeName) {
-            final ProductArgument args = settings.arguments;
+
+          if (settings.name == MyLocationChooser.routeName)
+          {
+             return MaterialPageRoute(
+              builder: (BuildContext context) =>
+                MyLocationChooser(),
+              maintainState: true,
+              fullscreenDialog: false
+              );
+          }
+          else if (settings.name == ProductListingPage.routeName) {
             return MaterialPageRoute(
-              builder: (BuildContext context) => ProductListingPage(
-                  title: args.title, message : args.message),
+              builder: (BuildContext context) =>
+                  ProductListingPage(),
               maintainState: true,
               fullscreenDialog: false,
             );
-          } else if (settings.name == ProductDetailPage.routeName) {
-            final ProductArgument args = settings.arguments;
+          } else if (settings.name == CartPage.routeName) {
 
             return MaterialPageRoute(
-              builder: (BuildContext context) => ProductDetailPage(title: args.title, message : args.message),
+              builder: (BuildContext context) =>
+                  CartPage(),
               maintainState: true,
               fullscreenDialog: false,
             );
           } else {
             return null;
           }
+
         });
   }
 
   Map<String, Marker> _GetShopByLocation() {
-
     return Map.from({
       "1": Marker(
           markerId: MarkerId("1"),

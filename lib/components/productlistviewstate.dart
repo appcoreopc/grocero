@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:grocero/Appconstant.dart';
 import 'package:grocero/models/productlistingmodel.dart';
+import 'package:grocero/navigations/navigationhelper.dart';
 import 'package:grocero/services/mock/mockmarkerservice.dart';
 import 'package:grocero/style/appstyle.dart';
 
-class ImageListViewState<T extends StatefulWidget> extends State<T> {
+class ProductListViewState<T extends StatefulWidget> extends State<T> {
   Future<List<ProductListingModel>> _futureDataSource;
   Map<String, int> productCount = Map<String, int>();
 
@@ -30,7 +32,8 @@ class ImageListViewState<T extends StatefulWidget> extends State<T> {
             return CircularProgressIndicator();
           },
         ),
-        backgroundColor: Colors.black);
+        backgroundColor: Colors.black,
+        bottomNavigationBar: NavigationHelper().CreateNavigationBar(this.context));
   }
 
   Widget _buildProductListingData(List<ProductListingModel> newsData) {
@@ -46,18 +49,9 @@ class ImageListViewState<T extends StatefulWidget> extends State<T> {
   Widget _buildRow(ProductListingModel productListingData) {
     return Ink(
       child: ListTile(
-        title: Text(productListingData.title,
-            style: AppStyle.listViewTitleFontStyle),
         subtitle: Padding(
             padding: EdgeInsets.fromLTRB(0, 12, 0, 12),
             child: buildChildLayout(productListingData)),
-        trailing: Icon(
-          Icons.arrow_forward,
-          color: Colors.white,
-        ),
-        onTap: () {
-          //_pushNewsCategory(newsData);
-        },
       ),
       color: Colors.grey,
     );
@@ -65,29 +59,23 @@ class ImageListViewState<T extends StatefulWidget> extends State<T> {
 
   Column buildChildLayout(ProductListingModel productListingData) {
     return Column(children: <Widget>[
-      Image.network(productListingData.urlToImage),
-      Padding(padding: EdgeInsets.all(10)),
-      Text(productListingData.description,
-          style: AppStyle.listViewTitleFontStyle),
-      Padding(padding: EdgeInsets.all(6)),
+     Image.network(productListingData.urlToImage),
+     Padding(padding: EdgeInsets.all(Appconstant.ListViewPadding)),
+     Text(productListingData.title,
+            style: AppStyle.listViewContentFontStyle),
+      Padding(padding: EdgeInsets.all(Appconstant.ListViewPadding)),
+      Text(productListingData.description,style: AppStyle.listViewContentFontStyle),
+      //Padding(padding: EdgeInsets.all(Appconstant.ListViewPadding)),
       Text(productListingData.content,
           style: AppStyle.listViewContentFontStyle),
       ButtonBar(
         children: <Widget>[
             _buildProductOrderCount(productListingData.title),
-          
           FlatButton(
             color: Colors.black,
-            child: const Text('Grab'),
+            child: const Text("Add to cart"),
             onPressed: () {
               _addProduct(productListingData.title, 1);
-            },
-          ),
-          FlatButton(
-            color: Colors.black,
-            child: const Text('Remove'),
-            onPressed: () {
-              _removeProduct(productListingData.title, 1);
             },
           ),
         ],
@@ -115,20 +103,12 @@ class ImageListViewState<T extends StatefulWidget> extends State<T> {
     }
   }
 
-  // Widget _buildProductOrderCount(int count) {
-  //   if (count > 0) {
-  //     return Text(count.toString(), style: AppStyle.listViewTitleFontStyle);
-  //   } else {
-  //     return Text("", style: AppStyle.listViewTitleFontStyle);
-  //   }
-  // }
-
   Widget _buildProductOrderCount(String title) {
     if (title != null && productCount.keys.contains(title)) {
       var count = productCount[title];
       return Text(count.toString(), style: AppStyle.listViewTitleFontStyle);
     } else {
-      return Text("", style: AppStyle.listViewTitleFontStyle);
+      return Text(Appconstant.stringEmpty, style: AppStyle.listViewTitleFontStyle);
     }
   }
 }
