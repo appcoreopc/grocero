@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:grocero/cart/cartpage.dart';
+import 'package:grocero/checkout/checkoutpage.dart';
 import 'package:grocero/dialogs/locationdialog.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:grocero/models/productargument.dart';
@@ -16,7 +17,6 @@ class MyLocationChooser extends StatefulWidget {
 }
 
 class _MyLocationChooserState extends State<MyLocationChooser> {
-  
   Map<String, Marker> _markers = {};
   final navigatorKey = GlobalKey<NavigatorState>();
   LatLng _cameraLongLat = LatLng(0, 0);
@@ -98,38 +98,36 @@ class _MyLocationChooserState extends State<MyLocationChooser> {
               ),
             ],
           ),
-          bottomNavigationBar: NavigationHelper().CreateNavigationBar(this.context),
+          bottomNavigationBar:
+              NavigationHelper().CreateNavigationBar(this.context),
         ),
         onGenerateRoute: (settings) {
-
-          if (settings.name == MyLocationChooser.routeName)
-          {
-             return MaterialPageRoute(
-              builder: (BuildContext context) =>
-                MyLocationChooser(),
-              maintainState: true,
-              fullscreenDialog: false
-              );
-          }
-          else if (settings.name == ProductListingPage.routeName) {
+          if (settings.name == MyLocationChooser.routeName) {
             return MaterialPageRoute(
-              builder: (BuildContext context) =>
-                  ProductListingPage(),
+                builder: (BuildContext context) => MyLocationChooser(),
+                maintainState: true,
+                fullscreenDialog: false);
+          } else if (settings.name == ProductListingPage.routeName) {
+            return MaterialPageRoute(
+              builder: (BuildContext context) => ProductListingPage(),
               maintainState: true,
               fullscreenDialog: false,
             );
           } else if (settings.name == CartPage.routeName) {
-
             return MaterialPageRoute(
-              builder: (BuildContext context) =>
-                  CartPage(),
+              builder: (BuildContext context) => CartPage(),
+              maintainState: true,
+              fullscreenDialog: false,
+            );
+          } else if (settings.name == CheckoutPage.routeName) {
+            return MaterialPageRoute(
+              builder: (BuildContext context) => CheckoutPage(),
               maintainState: true,
               fullscreenDialog: false,
             );
           } else {
             return null;
           }
-
         });
   }
 

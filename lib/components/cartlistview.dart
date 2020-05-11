@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:grocero/checkout/checkoutpage.dart';
 import 'package:grocero/models/productlistingmodel.dart';
 import 'package:grocero/navigations/navigationhelper.dart';
 import 'package:grocero/services/mock/mockmarkerservice.dart';
@@ -51,8 +52,13 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
       FlatButton(
         color: Colors.black,
         textColor: Colors.grey,
-        child: Text('Proceed to checkout', style: AppStyle.checkoutFontContentFontStyle),
-        onPressed: () {},
+        child: Text('Proceed to checkout',
+            style: AppStyle.checkoutFontContentFontStyle),
+        onPressed: () {
+
+                _proceedToCheckOut(productCount);
+
+        },
       )
     ]);
   }
@@ -82,7 +88,6 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
           style: AppStyle.listViewContentFontStyle),
       ButtonBar(
         children: <Widget>[
-          _buildProductOrderCount(productListingData.title),
           FlatButton(
             color: Colors.black,
             child: const Text('Add'),
@@ -90,6 +95,7 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
               _addProduct(productListingData.title, 1);
             },
           ),
+          _buildProductOrderCount(productListingData.title),
           FlatButton(
             color: Colors.black,
             child: const Text('Remove'),
@@ -116,18 +122,27 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
 
   void _removeProduct(String productName, int quantity) {
     if (productCount.keys.contains(productName)) {
-      setState(() {
-        productCount[productName] = productCount[productName] - quantity;
-      });
+      final currentCount = productCount[productName];
+      if (currentCount > 0) {
+        setState(() {
+          productCount[productName] = currentCount - quantity;
+        });
+      }
     }
   }
 
   Widget _buildProductOrderCount(String title) {
     if (title != null && productCount.keys.contains(title)) {
       var count = productCount[title];
-      return Text(count.toString(), style: AppStyle.listViewTitleFontStyle);
-    } else {
-      return Text("", style: AppStyle.listViewTitleFontStyle);
+
+      if (count > 0) {
+        return Text(count.toString(), style: AppStyle.listViewTitleFontStyle);
+      }
     }
+    return Text("  ", style: AppStyle.listViewTitleFontStyle);
+  }
+
+  void _proceedToCheckOut(Map<String, int> productCount) {
+    NavigationHelper.NavigateTo(this.context, CheckoutPage.routeName, null);
   }
 }
