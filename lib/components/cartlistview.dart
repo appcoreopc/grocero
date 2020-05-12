@@ -13,53 +13,48 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
   CartListViewState(this._cartProduct);
 
   CartProduct _cartProduct; 
-  Future<List<ProductListingModel>> _futureDataSource;
   Map<String, int> _productCount = Map<String, int>();
-  List<ProductListingModel> _productListing;
+  List<ProductListingModel> _productListing = List<ProductListingModel>();
 
   int indexCountRecord = 0;
 
   @override
   void initState() {
     super.initState();
-    _productListing =  _cartProduct.productListings; 
+  
     _productCount = _cartProduct.productCount;
-    
+    getMatchingProduct(_cartProduct);
+  }
+
+  void getMatchingProduct(CartProduct cartProduct) 
+  {
+    if (cartProduct.productCount != null && cartProduct.productListings != null)
+    { 
+      cartProduct.productCount.forEach((x, i) => _productListing.addAll(cartProduct.productListings.where((element)=> element.title == x)));
+    };
   }
 
   @override
   Widget build(BuildContext context) {
 
-
-    _futureDataSource = MockDataService.GetProductListing();
-
     return Scaffold(
-        body: FutureBuilder<List<ProductListingModel>>(
-          future: _futureDataSource,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return _buildProductListingData(snapshot.data);
-            } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
-            }
-            return CircularProgressIndicator();
-          },
-        ),
+
+        body: _buildProductListingData(this._productListing),
         backgroundColor: Appconstant.appDefaultBackgroundColor,
         bottomNavigationBar: NavigationHelper().CreateNavigationBar(
             this.context,
             CartProduct(this._productCount, this._productListing)));
   }
 
-  Widget _buildProductListingData(List<ProductListingModel> newsData) {
+  Widget _buildProductListingData(List<ProductListingModel> _productListing) {
     return Column(children: [
       Expanded(
           child: ListView.builder(
-              itemCount: newsData.length,
+              itemCount: _productListing.length,
               padding: const EdgeInsets.all(12.0),
               itemBuilder: (context, index) {
                 if (index.isOdd) return Divider();
-                return _buildRow(newsData[index], index);
+                return _buildRow(_productListing[index], index);
               })),
       FlatButton(
         color: Appconstant.appDefaultBackgroundColor,
@@ -80,13 +75,13 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
             style: AppStyle.listViewTitleFontStyle),
         subtitle: Padding(
             padding: EdgeInsets.fromLTRB(0, 12, 0, 12),
-            child: buildChildLayout(productListingData, index)),
+            child: buildChildLayout(productListingData)),
       ),
       color: Colors.grey,
     );
   }
 
-  Column buildChildLayout(ProductListingModel productListingData, int index) {
+  Column buildChildLayout(ProductListingModel productListingData) {
     return Column(children: <Widget>[
       Image.network(productListingData.urlToImage),
       Padding(padding: EdgeInsets.all(Appconstant.listViewPadding)),
