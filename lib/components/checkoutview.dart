@@ -21,16 +21,16 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
   Widget _buildCustomerCheckoutLayout(List<ProductListingModel> newsData) {
     return Column(children: [
 
-      _buildCheckoutRowLayout("Customer Name", "Maggie", "Update"),
-      _buildCheckoutRowLayout("Contact", "Maggie", "Change"),
-      _buildCheckoutRowLayout("Address", "Maggie", "Change"),
-      _buildCheckoutRowLayout("Delivery Time", "Maggie", "Change"),
+      _buildCheckoutRowLayout(Appconstant.customerCheckoutNameText, "Maggie", "Update"),
+      _buildCheckoutRowLayout(Appconstant.customerCheckoutPhoneText, "Maggie", "Change"),
+      _buildCheckoutRowLayout(Appconstant.customerCheckoutAddressText, "Maggie", "Change"),
+      _buildCheckoutRowLayout(Appconstant.customerCheckoutDeliveryTimeText, "Maggie", "Change"),
 
       FlatButton(
         color: Appconstant.appDefaultBackgroundColor,
         textColor: Appconstant.appDefaultTextColor,
         child:
-            Text('Make payment', style: AppStyle.checkoutFontContentFontStyle),
+            Text(Appconstant.makePaymentText, style: AppStyle.checkoutFontContentFontStyle),
         onPressed: () {},
       )
     ]);
@@ -65,13 +65,12 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
   }
 
   Widget _buildProductOrderCount(String title) {
-    if (title != null && productCount.keys.contains(title)) {
-      var count = productCount[title];
 
-      if (count > 0) {
-        return Text(count.toString(), style: AppStyle.listViewTitleFontStyle);
-      }
+    int count = 0;
+
+    if (title != null && productCount.keys.contains(title)) {
+      count = productCount[title];
     }
-    return Text("  ", style: AppStyle.listViewTitleFontStyle);
+    return Text(count.toString(),style: AppStyle.listViewTitleFontStyle);
   }
 }

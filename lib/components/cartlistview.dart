@@ -34,7 +34,7 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
             return CircularProgressIndicator();
           },
         ),
-        backgroundColor: Colors.black,
+        backgroundColor: Appconstant.appDefaultBackgroundColor,
         bottomNavigationBar:
             NavigationHelper().CreateNavigationBar(this.context));
   }
@@ -50,9 +50,9 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
                 return _buildRow(newsData[index], index);
               })),
       FlatButton(
-        color: Colors.black,
+        color: Appconstant.appDefaultBackgroundColor,
         textColor: Colors.grey,
-        child: Text('Proceed to checkout',
+        child: Text(Appconstant.productListingProceedToCheckout,
             style: AppStyle.checkoutFontContentFontStyle),
         onPressed: () {
 
@@ -79,9 +79,9 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
   Column buildChildLayout(ProductListingModel productListingData, int index) {
     return Column(children: <Widget>[
       Image.network(productListingData.urlToImage),
-      Padding(padding: EdgeInsets.all(Appconstant.ListViewPadding)),
+      Padding(padding: EdgeInsets.all(Appconstant.listViewPadding)),
       Text(productListingData.title, style: AppStyle.listViewContentFontStyle),
-      Padding(padding: EdgeInsets.all(Appconstant.ListViewPadding)),
+      Padding(padding: EdgeInsets.all(Appconstant.listViewPadding)),
       Text(productListingData.description,
           style: AppStyle.listViewContentFontStyle),
       Text(productListingData.content,
@@ -89,8 +89,8 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
       ButtonBar(
         children: <Widget>[
           FlatButton(
-            color: Colors.black,
-            child: const Text('Add'),
+            color: Appconstant.appDefaultBackgroundColor,
+            child: Text(Appconstant.addProductToCartText),
             onPressed: () {
               _addProduct(productListingData.title, 1);
             },
@@ -98,7 +98,7 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
           _buildProductOrderCount(productListingData.title),
           FlatButton(
             color: Colors.black,
-            child: const Text('Remove'),
+            child: Text(Appconstant.removeProuctFromCartText),
             onPressed: () {
               _removeProduct(productListingData.title, 1);
             },

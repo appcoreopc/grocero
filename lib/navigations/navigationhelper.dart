@@ -19,15 +19,15 @@ class NavigationHelper {
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
-          title: Text(Appconstant.ExploreMenuText),
+          title: Text(Appconstant.exploreMenuText),
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.search),
-          title: Text(Appconstant.ExploreMenuText),
+          title: Text(Appconstant.exploreMenuText),
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.shopping_cart),
-          title: Text(Appconstant.CartMenuText),
+          title: Text(Appconstant.cartMenuText),
         ),
       ],
       currentIndex: 0,

@@ -32,17 +32,17 @@ class ProductListViewState<T extends StatefulWidget> extends State<T> {
             return CircularProgressIndicator();
           },
         ),
-        backgroundColor: Colors.black,
+        backgroundColor: Appconstant.appDefaultBackgroundColor,
         bottomNavigationBar: NavigationHelper().CreateNavigationBar(this.context));
   }
 
-  Widget _buildProductListingData(List<ProductListingModel> newsData) {
+  Widget _buildProductListingData(List<ProductListingModel> productLists) {
     return ListView.builder(
-        itemCount: newsData.length,
+        itemCount: productLists.length,
         padding: const EdgeInsets.all(12.0),
         itemBuilder: (context, i) {
           if (i.isOdd) return Divider();
-          return _buildRow(newsData[i]);
+          return _buildRow(productLists[i]);
         });
   }
 
@@ -53,17 +53,17 @@ class ProductListViewState<T extends StatefulWidget> extends State<T> {
             padding: EdgeInsets.fromLTRB(0, 12, 0, 12),
             child: buildChildLayout(productListingData)),
       ),
-      color: Colors.grey,
+      color: Appconstant.appDefaultTextColor,
     );
   }
 
   Column buildChildLayout(ProductListingModel productListingData) {
     return Column(children: <Widget>[
      Image.network(productListingData.urlToImage),
-     Padding(padding: EdgeInsets.all(Appconstant.ListViewPadding)),
+     Padding(padding: EdgeInsets.all(Appconstant.listViewPadding)),
      Text(productListingData.title,
             style: AppStyle.listViewContentFontStyle),
-      Padding(padding: EdgeInsets.all(Appconstant.ListViewPadding)),
+      Padding(padding: EdgeInsets.all(Appconstant.listViewPadding)),
       Text(productListingData.description,style: AppStyle.listViewContentFontStyle),
       //Padding(padding: EdgeInsets.all(Appconstant.ListViewPadding)),
       Text(productListingData.content,
@@ -72,8 +72,8 @@ class ProductListViewState<T extends StatefulWidget> extends State<T> {
         children: <Widget>[
             _buildProductOrderCount(productListingData.title),
           FlatButton(
-            color: Colors.black,
-            child: const Text("Add to cart"),
+            color: Appconstant.appDefaultBackgroundColor,
+            child: Text(Appconstant.addToCartText),
             onPressed: () {
               _addProduct(productListingData.title, 1);
             },
@@ -91,14 +91,6 @@ class ProductListViewState<T extends StatefulWidget> extends State<T> {
     } else {
       setState(() {
         productCount[productName] = quantity;
-      });
-    }
-  }
-
-  void _removeProduct(String productName, int quantity) {
-    if (productCount.keys.contains(productName)) {
-      setState(() {
-        productCount[productName] = productCount[productName] - quantity;
       });
     }
   }
