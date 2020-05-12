@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:grocero/cart/cartpage.dart';
 import 'package:grocero/checkout/checkoutpage.dart';
-import 'package:grocero/dialogs/locationdialog.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:grocero/models/cartproducts.dart';
 import 'package:grocero/models/productargument.dart';
 import 'package:grocero/navigations/navigationhelper.dart';
 import 'package:grocero/products/productlistpage.dart';
@@ -70,6 +70,7 @@ class _MyLocationChooserState extends State<MyLocationChooser> {
 
   @override
   Widget build(BuildContext _context) {
+  
     // if (navigatorKey.currentContext != null) {
     //   var context = navigatorKey.currentState.overlay.context;
     //   if (!isLocationConfigured) {
@@ -99,7 +100,7 @@ class _MyLocationChooserState extends State<MyLocationChooser> {
             ],
           ),
           bottomNavigationBar:
-              NavigationHelper().CreateNavigationBar(this.context),
+              NavigationHelper().CreateNavigationBar(this.context, null),
         ),
         onGenerateRoute: (settings) {
           if (settings.name == MyLocationChooser.routeName) {
@@ -114,14 +115,16 @@ class _MyLocationChooserState extends State<MyLocationChooser> {
               fullscreenDialog: false,
             );
           } else if (settings.name == CartPage.routeName) {
+            var cartData = settings.arguments as CartProduct;
             return MaterialPageRoute(
-              builder: (BuildContext context) => CartPage(),
+              builder: (BuildContext context) => CartPage(cartData),
               maintainState: true,
               fullscreenDialog: false,
             );
           } else if (settings.name == CheckoutPage.routeName) {
+            var cartData = settings.arguments as CartProduct;
             return MaterialPageRoute(
-              builder: (BuildContext context) => CheckoutPage(),
+              builder: (BuildContext context) => CheckoutPage(cartData),
               maintainState: true,
               fullscreenDialog: false,
             );

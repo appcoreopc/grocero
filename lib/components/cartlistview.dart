@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:grocero/checkout/checkoutpage.dart';
+import 'package:grocero/models/cartproducts.dart';
 import 'package:grocero/models/productlistingmodel.dart';
 import 'package:grocero/navigations/navigationhelper.dart';
 import 'package:grocero/services/mock/mockmarkerservice.dart';
@@ -8,18 +9,28 @@ import 'package:grocero/style/appstyle.dart';
 import '../Appconstant.dart';
 
 class CartListViewState<T extends StatefulWidget> extends State<T> {
+
+  CartListViewState(this._cartProduct);
+
+  CartProduct _cartProduct; 
   Future<List<ProductListingModel>> _futureDataSource;
-  Map<String, int> productCount = Map<String, int>();
+  Map<String, int> _productCount = Map<String, int>();
+  List<ProductListingModel> _productListing;
+
   int indexCountRecord = 0;
 
   @override
   void initState() {
     super.initState();
-    _futureDataSource = MockDataService.GetProductListing();
+    _productListing =  _cartProduct.productListings; 
+    _productCount = _cartProduct.productCount;
+    
   }
 
   @override
   Widget build(BuildContext context) {
+
+
     _futureDataSource = MockDataService.GetProductListing();
 
     return Scaffold(
@@ -35,8 +46,9 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
           },
         ),
         backgroundColor: Appconstant.appDefaultBackgroundColor,
-        bottomNavigationBar:
-            NavigationHelper().CreateNavigationBar(this.context));
+        bottomNavigationBar: NavigationHelper().CreateNavigationBar(
+            this.context,
+            CartProduct(this._productCount, this._productListing)));
   }
 
   Widget _buildProductListingData(List<ProductListingModel> newsData) {
@@ -55,9 +67,7 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
         child: Text(Appconstant.productListingProceedToCheckout,
             style: AppStyle.checkoutFontContentFontStyle),
         onPressed: () {
-
-                _proceedToCheckOut(productCount);
-
+          _proceedToCheckOut(_productCount);
         },
       )
     ]);
@@ -109,37 +119,35 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
   }
 
   void _addProduct(String productName, int quantity) {
-    if (productCount.keys.contains(productName)) {
+    if (_productCount.keys.contains(productName)) {
       setState(() {
-        productCount[productName] = productCount[productName] + quantity;
+        _productCount[productName] = _productCount[productName] + quantity;
       });
     } else {
       setState(() {
-        productCount[productName] = quantity;
+        _productCount[productName] = quantity;
       });
     }
   }
 
   void _removeProduct(String productName, int quantity) {
-    if (productCount.keys.contains(productName)) {
-      final currentCount = productCount[productName];
+    if (_productCount.keys.contains(productName)) {
+      final currentCount = _productCount[productName];
       if (currentCount > 0) {
         setState(() {
-          productCount[productName] = currentCount - quantity;
+          _productCount[productName] = currentCount - quantity;
         });
       }
     }
   }
 
   Widget _buildProductOrderCount(String title) {
-    if (title != null && productCount.keys.contains(title)) {
-      var count = productCount[title];
+    int count = 0;
 
-      if (count > 0) {
-        return Text(count.toString(), style: AppStyle.listViewTitleFontStyle);
-      }
+    if (title != null && _productCount.keys.contains(title)) {
+      count = _productCount[title];
     }
-    return Text("  ", style: AppStyle.listViewTitleFontStyle);
+    return Text(count.toString(), style: AppStyle.listViewTitleFontStyle);
   }
 
   void _proceedToCheckOut(Map<String, int> productCount) {

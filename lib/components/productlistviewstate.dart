@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:grocero/Appconstant.dart';
+import 'package:grocero/models/cartproducts.dart';
 import 'package:grocero/models/productlistingmodel.dart';
 import 'package:grocero/navigations/navigationhelper.dart';
 import 'package:grocero/services/mock/mockmarkerservice.dart';
@@ -9,6 +10,7 @@ import 'package:grocero/style/appstyle.dart';
 class ProductListViewState<T extends StatefulWidget> extends State<T> {
   Future<List<ProductListingModel>> _futureDataSource;
   Map<String, int> productCount = Map<String, int>();
+  List<ProductListingModel> _productListing; 
 
   @override
   void initState() {
@@ -25,7 +27,8 @@ class ProductListViewState<T extends StatefulWidget> extends State<T> {
           future: _futureDataSource,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return _buildProductListingData(snapshot.data);
+               _productListing = snapshot.data;
+              return _buildProductListingData(_productListing);
             } else if (snapshot.hasError) {
               return Text("${snapshot.error}");
             }
@@ -33,7 +36,9 @@ class ProductListViewState<T extends StatefulWidget> extends State<T> {
           },
         ),
         backgroundColor: Appconstant.appDefaultBackgroundColor,
-        bottomNavigationBar: NavigationHelper().CreateNavigationBar(this.context));
+        bottomNavigationBar:
+            NavigationHelper().CreateNavigationBar(this.context, CartProduct(this.productCount, 
+            this._productListing)));
   }
 
   Widget _buildProductListingData(List<ProductListingModel> productLists) {
@@ -59,18 +64,17 @@ class ProductListViewState<T extends StatefulWidget> extends State<T> {
 
   Column buildChildLayout(ProductListingModel productListingData) {
     return Column(children: <Widget>[
-     Image.network(productListingData.urlToImage),
-     Padding(padding: EdgeInsets.all(Appconstant.listViewPadding)),
-     Text(productListingData.title,
-            style: AppStyle.listViewContentFontStyle),
+      Image.network(productListingData.urlToImage),
       Padding(padding: EdgeInsets.all(Appconstant.listViewPadding)),
-      Text(productListingData.description,style: AppStyle.listViewContentFontStyle),
-      //Padding(padding: EdgeInsets.all(Appconstant.ListViewPadding)),
+      Text(productListingData.title, style: AppStyle.listViewContentFontStyle),
+      Padding(padding: EdgeInsets.all(Appconstant.listViewPadding)),
+      Text(productListingData.description,
+          style: AppStyle.listViewContentFontStyle),
       Text(productListingData.content,
           style: AppStyle.listViewContentFontStyle),
       ButtonBar(
         children: <Widget>[
-            _buildProductOrderCount(productListingData.title),
+          _buildProductOrderCount(productListingData.title),
           FlatButton(
             color: Appconstant.appDefaultBackgroundColor,
             child: Text(Appconstant.addToCartText),
@@ -84,23 +88,26 @@ class ProductListViewState<T extends StatefulWidget> extends State<T> {
   }
 
   void _addProduct(String productName, int quantity) {
+    int totalOrderItem = 0;
+
     if (productCount.keys.contains(productName)) {
-      setState(() {
-        productCount[productName] = productCount[productName] + quantity;
-      });
+      totalOrderItem = productCount[productName] + quantity;
     } else {
+      totalOrderItem = quantity;
+    }
+    
+    if (totalOrderItem > 0) {
       setState(() {
-        productCount[productName] = quantity;
+        productCount[productName] = totalOrderItem;
       });
     }
   }
 
   Widget _buildProductOrderCount(String title) {
+    int count = 0;
     if (title != null && productCount.keys.contains(title)) {
-      var count = productCount[title];
-      return Text(count.toString(), style: AppStyle.listViewTitleFontStyle);
-    } else {
-      return Text(Appconstant.stringEmpty, style: AppStyle.listViewTitleFontStyle);
+      count = productCount[title];
     }
+    return Text(count.toString(), style: AppStyle.listViewTitleFontStyle);
   }
 }

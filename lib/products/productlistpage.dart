@@ -3,16 +3,10 @@ import 'package:grocero/components/productlistviewstate.dart';
 
 class ProductListingPage extends StatefulWidget {
 
-  // ProductListingPage({
-  //   Key key,
-  //   @required this.title,
-  //   @required this.message,
-  // }) : super(key: key);
+  ProductListingPage();
 
   static const routeName = '/explore';
-  String title;
-  String message;
-   @override
 
+  @override
   State<StatefulWidget> createState() => ProductListViewState();
 }

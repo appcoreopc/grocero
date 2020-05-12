@@ -26,9 +26,10 @@ class Appconstant {
   static String customerCheckoutAddressText = "Delivery Address";
   static String customerCheckoutDeliveryTimeText = "Delivery Address";
 
-
   static String productListingProceedToCheckout = "Procee to checkout";
-  static String addProductToCartText = "Delivery Address";
-  static String removeProuctFromCartText = "Delivery Address";
+  static String addProductToCartText = "Add";
+  static String removeProuctFromCartText = "Remove";
+
+  static String setCurrentLocationText = 'Set current location';
 
 }
