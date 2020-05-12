@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:grocero/appconstant.dart';
 import 'package:grocero/models/productlistingmodel.dart';
 import 'package:grocero/navigations/navigationhelper.dart';
 import 'package:grocero/style/appstyle.dart';
-import '../Appconstant.dart';
 
 class CheckoutViewState<T extends StatefulWidget> extends State<T> {
   List<ProductListingModel> _customerOrderLists;
@@ -13,20 +13,22 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: _buildCustomerCheckoutLayout(_customerOrderLists),
-        backgroundColor: Colors.black,
+        backgroundColor: Appconstant.appDefaultBackgroundColor,
         bottomNavigationBar:
             NavigationHelper().CreateNavigationBar(this.context));
   }
 
   Widget _buildCustomerCheckoutLayout(List<ProductListingModel> newsData) {
     return Column(children: [
+
       _buildCheckoutRowLayout("Customer Name", "Maggie", "Update"),
       _buildCheckoutRowLayout("Contact", "Maggie", "Change"),
       _buildCheckoutRowLayout("Address", "Maggie", "Change"),
-      _buildCheckoutRowLayout("Delivery Timee", "Maggie", "Change"),
+      _buildCheckoutRowLayout("Delivery Time", "Maggie", "Change"),
+
       FlatButton(
-        color: Colors.black,
-        textColor: Colors.grey,
+        color: Appconstant.appDefaultBackgroundColor,
+        textColor: Appconstant.appDefaultTextColor,
         child:
             Text('Make payment', style: AppStyle.checkoutFontContentFontStyle),
         onPressed: () {},
@@ -36,7 +38,8 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
 
   Widget _buildCheckoutRowLayout(
       String title, String subtitle, String commandString) {
-    return Ink(
+    return 
+    Ink(
       child: ListTile(
         title: Text(title, style: AppStyle.listViewTitleFontStyle),
         subtitle: Padding(
@@ -49,13 +52,13 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
           onPressed: () => {},
         ),
       ),
-      color: Colors.grey,
+      color: Appconstant.appDefaultTextColor,
     );
   }
 
   Column buildChildLayout(String title, String subtitle) {
     return Column(children: <Widget>[
-      Padding(padding: EdgeInsets.all(Appconstant.ListViewPadding)),
+      Padding(padding: EdgeInsets.all(Appconstant.listViewPadding)),
       Text(title, style: AppStyle.listViewContentFontStyle),
       Text(subtitle, style: AppStyle.listViewContentFontStyle),
     ], crossAxisAlignment: CrossAxisAlignment.start);
