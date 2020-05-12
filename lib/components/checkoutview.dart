@@ -11,14 +11,13 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
 
   List<ProductListingModel> _customerOrderLists;
   Map<String, int> _productCount = Map<String, int>();
-  int indexCountRecord = 0;
-  CartProduct _cartProduct; 
+  CartProduct _cartProduct;
 
-    @override
+  @override
   void initState() {
     super.initState();
-    _cartProduct.productListings = _customerOrderLists; 
-    _cartProduct.productCount = _productCount; 
+    _cartProduct.productListings = _customerOrderLists;
+    _cartProduct.productCount = _productCount;
   }
 
   @override
@@ -26,32 +25,46 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
     return Scaffold(
         body: _buildCustomerCheckoutLayout(_customerOrderLists),
         backgroundColor: Appconstant.appDefaultBackgroundColor,
-        bottomNavigationBar:
-            NavigationHelper().CreateNavigationBar(this.context, CartProduct(_productCount, this._customerOrderLists)));
+        bottomNavigationBar: NavigationHelper().CreateNavigationBar(
+            this.context,
+            CartProduct(_productCount, this._customerOrderLists)));
   }
 
   Widget _buildCustomerCheckoutLayout(List<ProductListingModel> newsData) {
-    return Column(children: [
+    return Column(children: <Widget>[
+      Expanded(
+          child: Column(
+        children: [
+          _buildCheckoutRowLayout(
+              Appconstant.customerCheckoutNameText, "Maggie", "Update"),
+          _buildCheckoutRowLayout(
+              Appconstant.customerCheckoutPhoneText, "Maggie", "Change"),
+          _buildCheckoutRowLayout(
+              Appconstant.customerCheckoutAddressText, "Maggie", "Change"),
+          _buildCheckoutRowLayout(
+              Appconstant.customerCheckoutDeliveryTimeText, "Maggie", "Change"),
+        ],
+      )),
 
-      _buildCheckoutRowLayout(Appconstant.customerCheckoutNameText, "Maggie", "Update"),
-      _buildCheckoutRowLayout(Appconstant.customerCheckoutPhoneText, "Maggie", "Change"),
-      _buildCheckoutRowLayout(Appconstant.customerCheckoutAddressText, "Maggie", "Change"),
-      _buildCheckoutRowLayout(Appconstant.customerCheckoutDeliveryTimeText, "Maggie", "Change"),
-
+      Container(
+          color: Colors.transparent,
+          width: MediaQuery.of(context).size.width,
+          height: 60,
+          child:
       FlatButton(
-        color: Appconstant.appDefaultBackgroundColor,
-        textColor: Appconstant.appDefaultTextColor,
-        child:
-            Text(Appconstant.makePaymentText, style: AppStyle.checkoutFontContentFontStyle),
+        color: Appconstant.appCheckoutPaymentBackgroundColor,
+        textColor: Appconstant.appCheckoutPaymentTextColor,
+        child: Text(Appconstant.makePaymentText,
+            style: AppStyle.checkoutButtonFontContentFontStyle),
         onPressed: () {},
+      )
       )
     ]);
   }
 
   Widget _buildCheckoutRowLayout(
       String title, String subtitle, String commandString) {
-    return 
-    Ink(
+    return Ink(
       child: ListTile(
         title: Text(title, style: AppStyle.listViewTitleFontStyle),
         subtitle: Padding(
@@ -74,14 +87,5 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
       Text(title, style: AppStyle.listViewContentFontStyle),
       Text(subtitle, style: AppStyle.listViewContentFontStyle),
     ], crossAxisAlignment: CrossAxisAlignment.start);
-  }
-
-  Widget _buildProductOrderCount(String title) {
-
-    int count = 0;
-    if (title != null && _productCount.keys.contains(title)) {
-      count = _productCount[title];
-    }
-    return Text(count.toString(),style: AppStyle.listViewTitleFontStyle);
   }
 }

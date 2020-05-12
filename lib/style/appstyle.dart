@@ -10,4 +10,7 @@ class AppStyle {
 
 static final TextStyle checkoutFontContentFontStyle =
       TextStyle(fontSize: 24.0, color: Colors.grey);
+
+static final TextStyle checkoutButtonFontContentFontStyle =
+      TextStyle(fontSize: 18.0, color: Colors.black);
 }

@@ -1,44 +1,37 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:grocero/checkout/checkoutpage.dart';
 import 'package:grocero/models/cartproducts.dart';
 import 'package:grocero/models/productlistingmodel.dart';
 import 'package:grocero/navigations/navigationhelper.dart';
-import 'package:grocero/services/mock/mockmarkerservice.dart';
 import 'package:grocero/style/appstyle.dart';
 import '../Appconstant.dart';
 
 class CartListViewState<T extends StatefulWidget> extends State<T> {
-
   CartListViewState(this._cartProduct);
-
-  CartProduct _cartProduct; 
+  CartProduct _cartProduct;
   Map<String, int> _productCount = Map<String, int>();
   List<ProductListingModel> _productListing = List<ProductListingModel>();
-
-  int indexCountRecord = 0;
 
   @override
   void initState() {
     super.initState();
-  
+
     _productCount = _cartProduct.productCount;
     getMatchingProduct(_cartProduct);
   }
 
-  void getMatchingProduct(CartProduct cartProduct) 
-  {
-    if (cartProduct.productCount != null && cartProduct.productListings != null)
-    { 
-      cartProduct.productCount.forEach((x, i) => _productListing.addAll(cartProduct.productListings.where((element)=> element.title == x)));
-    };
+  void getMatchingProduct(CartProduct cartProduct) {
+    if (cartProduct.productCount != null &&
+        cartProduct.productListings != null) {
+      cartProduct.productCount.forEach((x, i) => _productListing.addAll(
+          cartProduct.productListings.where((element) => element.title == x)));
+    }
+    ;
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-
         body: _buildProductListingData(this._productListing),
         backgroundColor: Appconstant.appDefaultBackgroundColor,
         bottomNavigationBar: NavigationHelper().CreateNavigationBar(
@@ -56,15 +49,19 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
                 if (index.isOdd) return Divider();
                 return _buildRow(_productListing[index], index);
               })),
-      FlatButton(
-        color: Appconstant.appDefaultBackgroundColor,
-        textColor: Colors.grey,
-        child: Text(Appconstant.productListingProceedToCheckout,
-            style: AppStyle.checkoutFontContentFontStyle),
-        onPressed: () {
-          _proceedToCheckOut(_productCount);
-        },
-      )
+      Container(
+          color: Colors.transparent,
+          width: MediaQuery.of(context).size.width,
+          height: 60,
+          child: FlatButton(
+            color: Appconstant.appCheckoutPaymentBackgroundColor,
+            textColor: Appconstant.appCheckoutPaymentTextColor,
+            child: Text(Appconstant.productListingProceedToCheckout,
+                style: AppStyle.checkoutButtonFontContentFontStyle),
+            onPressed: () {
+              _proceedToCheckOut(_productCount);
+            },
+          ))
     ]);
   }
 
@@ -102,7 +99,7 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
           ),
           _buildProductOrderCount(productListingData.title),
           FlatButton(
-            color: Colors.black,
+            color: Appconstant.appDefaultBackgroundColor,
             child: Text(Appconstant.removeProuctFromCartText),
             onPressed: () {
               _removeProduct(productListingData.title, 1);
@@ -146,6 +143,7 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
   }
 
   void _proceedToCheckOut(Map<String, int> productCount) {
-    NavigationHelper.NavigateTo(this.context, CheckoutPage.routeName, null);
+    NavigationHelper.NavigateTo(this.context, CheckoutPage.routeName,
+        CartProduct(_productCount, _productListing));
   }
 }
