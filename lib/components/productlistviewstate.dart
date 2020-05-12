@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:grocero/Appconstant.dart';
+import 'package:grocero/cart/notificationRenderType.dart';
 import 'package:grocero/models/cartproducts.dart';
 import 'package:grocero/models/productlistingmodel.dart';
 import 'package:grocero/navigations/navigationhelper.dart';
@@ -11,6 +12,7 @@ class ProductListViewState<T extends StatefulWidget> extends State<T> {
   Future<List<ProductListingModel>> _futureDataSource;
   Map<String, int> productCount = Map<String, int>();
   List<ProductListingModel> _productListing;
+  NotificationRenderType _notificationRenderingType = NotificationRenderType.none; 
 
   @override
   void initState() {
@@ -39,7 +41,10 @@ class ProductListViewState<T extends StatefulWidget> extends State<T> {
             backgroundColor: Appconstant.appDefaultBackgroundColor,
             bottomNavigationBar: NavigationHelper().CreateNavigationBar(
                 this.context,
-                CartProduct(this.productCount, this._productListing))));
+                CartProduct(this.productCount, 
+                this._productListing, 
+                _notificationRenderingType),
+                )));
   }
 
   Widget _buildProductListingData(List<ProductListingModel> productLists) {
@@ -81,6 +86,7 @@ class ProductListViewState<T extends StatefulWidget> extends State<T> {
             child: Text(Appconstant.addToCartText),
             onPressed: () {
               _addProduct(productListingData.title, 1);
+
             },
           ),
         ],
@@ -100,6 +106,7 @@ class ProductListViewState<T extends StatefulWidget> extends State<T> {
     if (totalOrderItem > 0) {
       setState(() {
         productCount[productName] = totalOrderItem;
+        _notificationRenderingType = NotificationRenderType.simpleDot;
       });
     }
   }

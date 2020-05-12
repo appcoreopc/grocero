@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grocero/appconstant.dart';
+import 'package:grocero/cart/notificationRenderType.dart';
 import 'package:grocero/models/cartproducts.dart';
 import 'package:grocero/models/productlistingmodel.dart';
 import 'package:grocero/navigations/navigationhelper.dart';
@@ -11,12 +12,14 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
   List<ProductListingModel> _customerOrderLists;
   Map<String, int> _productCount = Map<String, int>();
   CartProduct _cartProduct;
+  NotificationRenderType _notificationRenderType = NotificationRenderType.none;
 
   @override
   void initState() {
     super.initState();
     _customerOrderLists = _cartProduct.productListings;
     _productCount = _cartProduct.productCount;
+    _notificationRenderType = _cartProduct.notificationRenderType;
   }
 
   @override
@@ -27,7 +30,7 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
             backgroundColor: Appconstant.appDefaultBackgroundColor,
             bottomNavigationBar: NavigationHelper().CreateNavigationBar(
                 this.context,
-                CartProduct(_productCount, this._customerOrderLists))));
+                CartProduct(_productCount, this._customerOrderLists, _notificationRenderType))));
   }
 
   Widget _buildCustomerCheckoutLayout(List<ProductListingModel> newsData) {
@@ -83,7 +86,7 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
   Column buildChildLayout(String title, String subtitle) {
     return Column(children: <Widget>[
       Padding(padding: EdgeInsets.all(Appconstant.listViewPadding)),
-      Text(title, style: AppStyle.listViewContentFontStyle),
+      //Text(title, style: AppStyle.listViewContentFontStyle),
       Text(subtitle, style: AppStyle.listViewContentFontStyle),
     ], crossAxisAlignment: CrossAxisAlignment.start);
   }

@@ -2,11 +2,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:grocero/cart/cartpage.dart';
+import 'package:grocero/cart/notificationRenderType.dart';
 import 'package:grocero/checkout/checkoutpage.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:grocero/models/cartproducts.dart';
 import 'package:grocero/models/productargument.dart';
+import 'package:grocero/models/widgetModel.dart';
 import 'package:grocero/navigations/navigationhelper.dart';
+import 'package:grocero/payment/makepayment.dart';
 import 'package:grocero/products/productlistpage.dart';
 
 class MyLocationChooser extends StatefulWidget {
@@ -100,7 +103,8 @@ class _MyLocationChooserState extends State<MyLocationChooser> {
             ],
           ),
           bottomNavigationBar:
-              NavigationHelper().CreateNavigationBar(this.context, null),
+              NavigationHelper().
+              CreateNavigationBar(this.context, null)
         ),
         onGenerateRoute: (settings) {
           if (settings.name == MyLocationChooser.routeName) {
@@ -128,7 +132,15 @@ class _MyLocationChooserState extends State<MyLocationChooser> {
               maintainState: true,
               fullscreenDialog: false,
             );
-          } else {
+          } else if (settings.name == MakePaymentPage.routeName) {
+            return MaterialPageRoute(
+              builder: (BuildContext context) => MakePaymentPage(),
+              maintainState: true,
+              fullscreenDialog: false,
+            );
+          } 
+          
+           else {
             return null;
           }
         });

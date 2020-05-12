@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grocero/cart/notificationRenderType.dart';
 import 'package:grocero/checkout/checkoutpage.dart';
 import 'package:grocero/models/cartproducts.dart';
 import 'package:grocero/models/productlistingmodel.dart';
@@ -9,6 +10,7 @@ import '../Appconstant.dart';
 class CartListViewState<T extends StatefulWidget> extends State<T> {
   CartListViewState(this._cartProduct);
   CartProduct _cartProduct;
+  NotificationRenderType _notificationRenderType = NotificationRenderType.none;
   
   Map<String, int> _productCount = Map<String, int>();
   List<ProductListingModel> _productListing = List<ProductListingModel>();
@@ -18,6 +20,7 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
     super.initState();
 
     _productCount = _cartProduct.productCount;
+    _notificationRenderType = _cartProduct.notificationRenderType;
     getMatchingProduct(_cartProduct);
   }
 
@@ -37,7 +40,7 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
             backgroundColor: Appconstant.appDefaultBackgroundColor,
             bottomNavigationBar: NavigationHelper().CreateNavigationBar(
                 this.context,
-                CartProduct(this._productCount, this._productListing))));
+                CartProduct(this._productCount, this._productListing, _notificationRenderType))));
   }
 
   Widget _buildProductListingData(List<ProductListingModel> _productListing) {
@@ -60,7 +63,7 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
             child: Text(Appconstant.productListingProceedToCheckout,
                 style: AppStyle.checkoutButtonFontContentFontStyle),
             onPressed: () {
-              _proceedToCheckOut(_productCount);
+              _proceedToCheckOut();
             },
           ))
     ]);
@@ -143,8 +146,8 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
     return Text(count.toString(), style: AppStyle.listViewTitleFontStyle);
   }
 
-  void _proceedToCheckOut(Map<String, int> productCount) {
+  void _proceedToCheckOut() {
     NavigationHelper.NavigateTo(this.context, CheckoutPage.routeName,
-        CartProduct(_productCount, _productListing));
+        CartProduct(_productCount, _productListing, _notificationRenderType));
   }
 }

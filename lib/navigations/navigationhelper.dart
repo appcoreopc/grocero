@@ -29,7 +29,8 @@ class NavigationHelper {
           title: Text(Appconstant.exploreMenuText),
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.shopping_cart),
+          icon: createNotification(
+              Appconstant.cartMenuText, Icons.home, cartProduct.notificationRenderType),
           title: Text(Appconstant.cartMenuText),
         ),
       ],
