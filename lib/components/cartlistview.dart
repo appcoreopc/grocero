@@ -9,6 +9,7 @@ import '../Appconstant.dart';
 class CartListViewState<T extends StatefulWidget> extends State<T> {
   CartListViewState(this._cartProduct);
   CartProduct _cartProduct;
+  
   Map<String, int> _productCount = Map<String, int>();
   List<ProductListingModel> _productListing = List<ProductListingModel>();
 
@@ -25,18 +26,18 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
         cartProduct.productListings != null) {
       cartProduct.productCount.forEach((x, i) => _productListing.addAll(
           cartProduct.productListings.where((element) => element.title == x)));
-    }
-    ;
+    };
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: _buildProductListingData(this._productListing),
-        backgroundColor: Appconstant.appDefaultBackgroundColor,
-        bottomNavigationBar: NavigationHelper().CreateNavigationBar(
-            this.context,
-            CartProduct(this._productCount, this._productListing)));
+    return SafeArea(
+        child: Scaffold(
+            body: _buildProductListingData(this._productListing),
+            backgroundColor: Appconstant.appDefaultBackgroundColor,
+            bottomNavigationBar: NavigationHelper().CreateNavigationBar(
+                this.context,
+                CartProduct(this._productCount, this._productListing))));
   }
 
   Widget _buildProductListingData(List<ProductListingModel> _productListing) {

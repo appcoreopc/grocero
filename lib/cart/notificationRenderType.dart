@@ -1,0 +1,1 @@
+enum NotificationRenderType { none, simpleDot, textDecoration }

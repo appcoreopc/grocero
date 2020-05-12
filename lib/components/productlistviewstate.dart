@@ -10,7 +10,7 @@ import 'package:grocero/style/appstyle.dart';
 class ProductListViewState<T extends StatefulWidget> extends State<T> {
   Future<List<ProductListingModel>> _futureDataSource;
   Map<String, int> productCount = Map<String, int>();
-  List<ProductListingModel> _productListing; 
+  List<ProductListingModel> _productListing;
 
   @override
   void initState() {
@@ -22,23 +22,24 @@ class ProductListViewState<T extends StatefulWidget> extends State<T> {
   Widget build(BuildContext context) {
     _futureDataSource = MockDataService.GetProductListing();
 
-    return Scaffold(
-        body: FutureBuilder<List<ProductListingModel>>(
-          future: _futureDataSource,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-               _productListing = snapshot.data;
-              return _buildProductListingData(_productListing);
-            } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
-            }
-            return CircularProgressIndicator();
-          },
-        ),
-        backgroundColor: Appconstant.appDefaultBackgroundColor,
-        bottomNavigationBar:
-            NavigationHelper().CreateNavigationBar(this.context, CartProduct(this.productCount, 
-            this._productListing)));
+    return SafeArea(
+        child: Scaffold(
+            body: FutureBuilder<List<ProductListingModel>>(
+              future: _futureDataSource,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  _productListing = snapshot.data;
+                  return _buildProductListingData(_productListing);
+                } else if (snapshot.hasError) {
+                  return Text("${snapshot.error}");
+                }
+                return CircularProgressIndicator();
+              },
+            ),
+            backgroundColor: Appconstant.appDefaultBackgroundColor,
+            bottomNavigationBar: NavigationHelper().CreateNavigationBar(
+                this.context,
+                CartProduct(this.productCount, this._productListing))));
   }
 
   Widget _buildProductListingData(List<ProductListingModel> productLists) {
@@ -95,7 +96,7 @@ class ProductListViewState<T extends StatefulWidget> extends State<T> {
     } else {
       totalOrderItem = quantity;
     }
-    
+
     if (totalOrderItem > 0) {
       setState(() {
         productCount[productName] = totalOrderItem;

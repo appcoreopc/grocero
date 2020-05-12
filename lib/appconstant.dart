@@ -30,4 +30,6 @@ class Appconstant {
   static String removeProuctFromCartText = "Remove";
   static String setCurrentLocationText = 'Set current location';
 
+  static String customerCheckoutTotalText = "Total";
+
 }

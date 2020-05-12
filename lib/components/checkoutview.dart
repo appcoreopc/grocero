@@ -6,7 +6,6 @@ import 'package:grocero/navigations/navigationhelper.dart';
 import 'package:grocero/style/appstyle.dart';
 
 class CheckoutViewState<T extends StatefulWidget> extends State<T> {
-
   CheckoutViewState(this._cartProduct);
 
   List<ProductListingModel> _customerOrderLists;
@@ -16,18 +15,19 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
   @override
   void initState() {
     super.initState();
-    _cartProduct.productListings = _customerOrderLists;
-    _cartProduct.productCount = _productCount;
+    _customerOrderLists = _cartProduct.productListings;
+    _productCount = _cartProduct.productCount;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: _buildCustomerCheckoutLayout(_customerOrderLists),
-        backgroundColor: Appconstant.appDefaultBackgroundColor,
-        bottomNavigationBar: NavigationHelper().CreateNavigationBar(
-            this.context,
-            CartProduct(_productCount, this._customerOrderLists)));
+    return SafeArea(
+        child: Scaffold(
+            body: _buildCustomerCheckoutLayout(_customerOrderLists),
+            backgroundColor: Appconstant.appDefaultBackgroundColor,
+            bottomNavigationBar: NavigationHelper().CreateNavigationBar(
+                this.context,
+                CartProduct(_productCount, this._customerOrderLists))));
   }
 
   Widget _buildCustomerCheckoutLayout(List<ProductListingModel> newsData) {
@@ -43,22 +43,21 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
               Appconstant.customerCheckoutAddressText, "Maggie", "Change"),
           _buildCheckoutRowLayout(
               Appconstant.customerCheckoutDeliveryTimeText, "Maggie", "Change"),
+          _buildCheckoutRowLayout(
+              Appconstant.customerCheckoutTotalText, "", ""),
         ],
       )),
-
       Container(
           color: Colors.transparent,
           width: MediaQuery.of(context).size.width,
           height: 60,
-          child:
-      FlatButton(
-        color: Appconstant.appCheckoutPaymentBackgroundColor,
-        textColor: Appconstant.appCheckoutPaymentTextColor,
-        child: Text(Appconstant.makePaymentText,
-            style: AppStyle.checkoutButtonFontContentFontStyle),
-        onPressed: () {},
-      )
-      )
+          child: FlatButton(
+            color: Appconstant.appCheckoutPaymentBackgroundColor,
+            textColor: Appconstant.appCheckoutPaymentTextColor,
+            child: Text(Appconstant.makePaymentText,
+                style: AppStyle.checkoutButtonFontContentFontStyle),
+            onPressed: () {},
+          ))
     ]);
   }
 

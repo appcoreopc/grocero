@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grocero/Appconstant.dart';
 import 'package:grocero/cart/cartpage.dart';
+import 'package:grocero/cart/notificationRenderType.dart';
 import 'package:grocero/locations/maps/map.dart';
 import 'package:grocero/models/cartproducts.dart';
 import 'package:grocero/products/productlistpage.dart';
@@ -19,7 +20,8 @@ class NavigationHelper {
     return BottomNavigationBar(
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
+          icon: createNotification(
+              "Home", Icons.home, NotificationRenderType.none),
           title: Text(Appconstant.exploreMenuText),
         ),
         BottomNavigationBarItem(
@@ -51,5 +53,52 @@ class NavigationHelper {
           }
       },
     );
+  }
+
+  Widget createNotification(String textToRender, IconData iconToRender,
+      NotificationRenderType notificationRenderType) {
+    switch (notificationRenderType) {
+      case NotificationRenderType.simpleDot:
+        return Stack(children: <Widget>[
+          Icon(iconToRender),
+          Positioned(
+            top: 0.0,
+            right: 0.0,
+            child: Icon(Icons.brightness_1, size: 8.0, color: Colors.redAccent),
+          )
+        ]);
+
+      case NotificationRenderType.textDecoration:
+        return Stack(
+          children: <Widget>[
+            Icon(iconToRender),
+            Positioned(
+              right: 0,
+              child: Container(
+                padding: EdgeInsets.all(1),
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                constraints: BoxConstraints(
+                  minWidth: 14,
+                  minHeight: 14,
+                ),
+                child: Text(
+                  textToRender,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 10,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            )
+          ],
+        );
+      case NotificationRenderType.none:
+      default:
+        return Icon(iconToRender);
+    }
   }
 }
