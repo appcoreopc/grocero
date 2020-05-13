@@ -89,70 +89,58 @@ class HomePageState extends State<HomePage> {
         });
   }
 
-  Widget _buildProductListingData(List<ProductListingModel> productLists) 
-  {
+  Widget _buildProductListingData(List<ProductListingModel> productLists) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Padding(padding: EdgeInsets.all(10)),
+        Text(
+          Appconstant.homePageTopSellingText,
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        Padding(padding: EdgeInsets.all(8)),
+        Expanded(
+          child: ListView.builder(
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            itemCount: productLists.length,
+            itemBuilder: (BuildContext context, int index) => Card(
+              child: Center(
+                  child: Column(children: <Widget>[
+                Image.network(productLists[index].urlToImage,
+                    height: 200, width: 200),
+                Text(productLists[index].title)
 
-  return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Text(
-            'Top selling item',
-            style: TextStyle(fontSize: 18),
-          ),
-          Expanded(
-            child: ListView.builder(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              itemCount: productLists.length,
-              itemBuilder: (BuildContext context, int index) => Card(
-                    child: Center(child:
-                    Column(children: <Widget>[
-                        Image.network(productLists[index].urlToImage, height: 200, width: 200),
-                        Text(productLists[index].title)
-                    ]
-                    )
-            
-                    ),
-                  ),
+              ])),
             ),
           ),
-          Text(
-            'Explore by category',
-            style: TextStyle(fontSize: 18),
+        ),
+        Padding(padding: EdgeInsets.all(8)),
+        Text(
+          Appconstant.homePageExploreByCategoryText,
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        
+        Expanded(
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: productLists.length,
+            itemBuilder: (ctx, index) {
+              return Card(
+                child: ListTile(
+                    title: Text(productLists[index].title),
+                    subtitle: Text(productLists[index].description)),
+              );
+            },
           ),
-          Expanded(
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: productLists.length,
-              itemBuilder: (ctx, index){
-                return Card(
-                  child: ListTile(
-                      title: Text(productLists[index].title),
-                      subtitle: Text(productLists[index].description)),
-                );
-              },
-            ),
-          ),
-        ],
-      );
-
-  }
-
-  Widget _buildRow(ProductListingModel productListingData) {
-    return Ink(
-      child: ListTile(
-        subtitle: buildChildLayout(productListingData)
-            //Padding(
-            //padding: EdgeInsets.fromLTRB(0, 1, 0, 1),
-            //: buildChildLayout(productListingData)),
-      ),
-      color: Appconstant.appDefaultTextColor,
+        ),
+      ],
     );
   }
 
   Widget buildChildLayout(ProductListingModel productListingData) {
     return Row(children: <Widget>[
-      Image.network(productListingData.urlToImage, width: 20,height: 20),
+      Image.network(productListingData.urlToImage, width: 20, height: 20),
       //Padding(padding: EdgeInsets.all(Appconstant.listViewPadding)),
       Text(productListingData.title, style: AppStyle.listViewContentFontStyle),
       // Padding(padding: EdgeInsets.all(Appconstant.listViewPadding)),

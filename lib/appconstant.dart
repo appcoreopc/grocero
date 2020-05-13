@@ -33,5 +33,8 @@ class Appconstant {
   static String customerCheckoutTotalText = "Total";
   static String homePageText = "Home";
 
+  static String homePageExploreByCategoryText = "Explore by category";
+  static String homePageTopSellingText = "Top sellers";
+
 
 }
