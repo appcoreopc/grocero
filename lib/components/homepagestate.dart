@@ -5,6 +5,7 @@ import 'package:grocero/checkout/checkoutpage.dart';
 import 'package:grocero/home/homepage.dart';
 import 'package:grocero/locations/maps/mylocatiopage.dart';
 import 'package:grocero/models/cartproducts.dart';
+import 'package:grocero/models/productcategory.dart';
 import 'package:grocero/models/productlistingmodel.dart';
 import 'package:grocero/navigations/navigationhelper.dart';
 import 'package:grocero/payment/makepayment.dart';
@@ -17,10 +18,12 @@ class HomePageState extends State<HomePage> {
   Future<List<ProductListingModel>> _futureDataSource;
   Map<String, int> productCount = Map<String, int>();
   List<ProductListingModel> _productListing;
+  Future<List<ProductCategory>> _productCategories;
 
   @override
   Widget build(BuildContext _context) {
     _futureDataSource = MockDataService.GetProductListing();
+    _productCategories = MockDataService.getProductCategories();
 
     return MaterialApp(
         home: Scaffold(
@@ -110,7 +113,6 @@ class HomePageState extends State<HomePage> {
                 Image.network(productLists[index].urlToImage,
                     height: 200, width: 200),
                 Text(productLists[index].title)
-
               ])),
             ),
           ),
@@ -120,20 +122,18 @@ class HomePageState extends State<HomePage> {
           Appconstant.homePageExploreByCategoryText,
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
-        
         Expanded(
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: productLists.length,
-            itemBuilder: (ctx, index) {
-              return Card(
-                child: ListTile(
-                    title: Text(productLists[index].title),
-                    subtitle: Text(productLists[index].description)),
-              );
-            },
-          ),
-        ),
+            child: FutureBuilder<List<ProductCategory>>(
+          future: _productCategories,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return _buildCategoryListView(snapshot.data);
+            } else if (snapshot.hasError) {
+              return Text("${snapshot.error}");
+            }
+            return CircularProgressIndicator();
+          },
+        )),
       ],
     );
   }
@@ -161,5 +161,19 @@ class HomePageState extends State<HomePage> {
       //   ],
       // )
     ], crossAxisAlignment: CrossAxisAlignment.start);
+  }
+
+  Widget _buildCategoryListView(List<ProductCategory> productLists) {
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: productLists.length,
+      itemBuilder: (ctx, index) {
+        return Card(
+          child: ListTile(
+              title: Text(productLists[index].title),
+              subtitle: Text(productLists[index].description)),
+        );
+      },
+    );
   }
 }

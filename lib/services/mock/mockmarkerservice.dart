@@ -1,4 +1,5 @@
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:grocero/models/productcategory.dart';
 import 'package:grocero/models/productlistingmodel.dart';
 
 class MockDataService {
@@ -55,7 +56,7 @@ class MockDataService {
         "Cappucino",
         "HasteCafe special Long Black",
         "Beans imported from South America",
-        "https://elisabeth.co.nz/wp-content/uploads/2020/04/CAPPUCCINO.jpg",
+        "https://elisabeth.co.nz/wp-content/uploads/2020/04/flat-white.jpg",
         "http://weburl."));
 
     targetList.add(ProductListingModel(
@@ -67,7 +68,16 @@ class MockDataService {
         "http://weburl."));
 
       
-
     return Future.value(targetList);
+  }
+
+  static Future<List<ProductCategory>> getProductCategories() {
+
+    var list = List<ProductCategory>();
+    list.add(ProductCategory("bakery", "bakery", "fresh from the oven"));
+    list.add(ProductCategory("vege", "vege", "fresh farm"));
+    list.add(ProductCategory("meat", "meat", "fresh always"));
+    list.add(ProductCategory("drinks", "drinks", ""));
+    return Future.value(list); 
   }
 }
