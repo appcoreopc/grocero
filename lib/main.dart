@@ -1,4 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:grocero/locations/maps/map.dart';
+import 'home/homepage.dart';
 
-void main() => runApp(MyLocationChooser());
+void main() => runApp(HomePage());

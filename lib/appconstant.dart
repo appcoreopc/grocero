@@ -31,5 +31,7 @@ class Appconstant {
   static String setCurrentLocationText = 'Set current location';
 
   static String customerCheckoutTotalText = "Total";
+  static String homePageText = "Home";
+
 
 }

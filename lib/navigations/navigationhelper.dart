@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:grocero/Appconstant.dart';
 import 'package:grocero/cart/cartpage.dart';
 import 'package:grocero/cart/notificationRenderType.dart';
-import 'package:grocero/locations/maps/map.dart';
+import 'package:grocero/locations/maps/mylocatiopage.dart';
 import 'package:grocero/models/cartproducts.dart';
 import 'package:grocero/products/productlistpage.dart';
 
@@ -40,7 +40,7 @@ class NavigationHelper {
         if (idx == 0)
           {
             NavigationHelper.NavigateTo(
-                context, MyLocationChooser.routeName, null)
+                context, MyLocationPage.routeName, null)
           }
         else if (idx == 1)
           {

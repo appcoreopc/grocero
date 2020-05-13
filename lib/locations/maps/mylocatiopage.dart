@@ -2,24 +2,22 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:grocero/cart/cartpage.dart';
-import 'package:grocero/cart/notificationRenderType.dart';
 import 'package:grocero/checkout/checkoutpage.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:grocero/models/cartproducts.dart';
 import 'package:grocero/models/productargument.dart';
-import 'package:grocero/models/widgetModel.dart';
 import 'package:grocero/navigations/navigationhelper.dart';
 import 'package:grocero/payment/makepayment.dart';
 import 'package:grocero/products/productlistpage.dart';
 
-class MyLocationChooser extends StatefulWidget {
+class MyLocationPage extends StatefulWidget {
   static String routeName = "MyLocationChooser";
 
   @override
-  _MyLocationChooserState createState() => _MyLocationChooserState();
+  _MyLocationPageState createState() => _MyLocationPageState();
 }
 
-class _MyLocationChooserState extends State<MyLocationChooser> {
+class _MyLocationPageState extends State<MyLocationPage> {
   Map<String, Marker> _markers = {};
   final navigatorKey = GlobalKey<NavigatorState>();
   LatLng _cameraLongLat = LatLng(0, 0);
@@ -107,9 +105,9 @@ class _MyLocationChooserState extends State<MyLocationChooser> {
               CreateNavigationBar(this.context, null)
         ),
         onGenerateRoute: (settings) {
-          if (settings.name == MyLocationChooser.routeName) {
+          if (settings.name == MyLocationPage.routeName) {
             return MaterialPageRoute(
-                builder: (BuildContext context) => MyLocationChooser(),
+                builder: (BuildContext context) => MyLocationPage(),
                 maintainState: true,
                 fullscreenDialog: false);
           } else if (settings.name == ProductListingPage.routeName) {
