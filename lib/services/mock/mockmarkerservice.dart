@@ -67,17 +67,16 @@ class MockDataService {
         "https://elisabeth.co.nz/wp-content/uploads/2020/04/flat-white.jpg",
         "http://weburl."));
 
-      
     return Future.value(targetList);
   }
 
   static Future<List<ProductCategory>> getProductCategories() {
 
     var list = List<ProductCategory>();
-    list.add(ProductCategory("bakery", "bakery", "fresh from the oven"));
-    list.add(ProductCategory("vege", "vege", "fresh farm"));
-    list.add(ProductCategory("meat", "meat", "fresh always"));
-    list.add(ProductCategory("drinks", "drinks", ""));
+    list.add(ProductCategory("bakery", "bakery", "fresh from the oven", "https://elisabeth.co.nz/wp-content/uploads/2020/04/flat-white.jpg"));
+    list.add(ProductCategory("vege", "vege", "fresh farm", "https://elisabeth.co.nz/wp-content/uploads/2020/04/flat-white.jpg"));
+    list.add(ProductCategory("meat", "meat", "fresh always", "https://elisabeth.co.nz/wp-content/uploads/2020/04/flat-white.jpg"));
+    list.add(ProductCategory("drinks", "drinks", "", "https://elisabeth.co.nz/wp-content/uploads/2020/04/flat-white.jpg"));
     return Future.value(list); 
   }
 }

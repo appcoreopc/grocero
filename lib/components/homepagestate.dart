@@ -38,7 +38,7 @@ class HomePageState extends State<HomePage> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   _productListing = snapshot.data;
-                  return _buildProductListingData(_productListing);
+                  return _buildTopSellingLayout(_productListing);
                 } else if (snapshot.hasError) {
                   return Text("${snapshot.error}");
                 }
@@ -92,7 +92,7 @@ class HomePageState extends State<HomePage> {
         });
   }
 
-  Widget _buildProductListingData(List<ProductListingModel> productLists) {
+  Widget _buildTopSellingLayout(List<ProductListingModel> productLists) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -163,17 +163,38 @@ class HomePageState extends State<HomePage> {
     ], crossAxisAlignment: CrossAxisAlignment.start);
   }
 
-  Widget _buildCategoryListView(List<ProductCategory> productLists) {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: productLists.length,
-      itemBuilder: (ctx, index) {
-        return Card(
-          child: ListTile(
-              title: Text(productLists[index].title),
-              subtitle: Text(productLists[index].description)),
-        );
-      },
+  // Widget _buildCategoryListView(List<ProductCategory> productLists) {
+  //   return ListView.builder(
+  //     shrinkWrap: true,
+  //     itemCount: productLists.length,
+  //     itemBuilder: (ctx, index) {
+  //       return Card(
+  //         child: ListTile(
+  //             title: Text(productLists[index].title),
+  //             subtitle: Text(productLists[index].description)),
+  //       );
+  //     },
+  //   );
+  // }
+
+  Widget _buildCategoryListView(List<ProductCategory> category) {
+    return GridView.count(
+      // crossAxisCount is the number of columns
+      crossAxisCount: 2,
+      //shrinkWrap: true,
+      // This creates two columns with two items in each column
+      children: List.generate(category.length, (index) {
+        return Center(
+            child: Column(children: <Widget>[
+          Padding(padding: EdgeInsets.all(10)),
+          Text(
+            category[index].title,
+            style: Theme.of(context).textTheme.title,
+          ), 
+          Padding(padding: EdgeInsets.all(10)),
+          Image.network(category[index].imageUrl, height: 100, width: 100)
+        ]));
+      }),
     );
   }
 }
