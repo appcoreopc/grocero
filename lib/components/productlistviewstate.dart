@@ -13,6 +13,8 @@ class ProductListViewState<T extends StatefulWidget> extends State<T> {
   Map<String, int> productCount = Map<String, int>();
   List<ProductListingModel> _productListing;
   NotificationRenderType _notificationRenderingType = NotificationRenderType.none; 
+  int pageIndex = 1;
+ 
 
   @override
   void initState() {
@@ -43,7 +45,7 @@ class ProductListViewState<T extends StatefulWidget> extends State<T> {
                 this.context,
                 CartProduct(this.productCount, 
                 this._productListing, 
-                _notificationRenderingType),
+                _notificationRenderingType, pageIndex),
                 )));
   }
 

@@ -13,7 +13,8 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
   Map<String, int> _productCount = Map<String, int>();
   CartProduct _cartProduct;
   NotificationRenderType _notificationRenderType = NotificationRenderType.none;
-
+  int pageIndex = 3; 
+  
   @override
   void initState() {
     super.initState();
@@ -30,7 +31,7 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
             backgroundColor: Appconstant.appDefaultBackgroundColor,
             bottomNavigationBar: NavigationHelper().CreateNavigationBar(
                 this.context,
-                CartProduct(_productCount, this._customerOrderLists, _notificationRenderType))));
+                CartProduct(_productCount, this._customerOrderLists, _notificationRenderType, pageIndex))));
   }
 
   Widget _buildCustomerCheckoutLayout(List<ProductListingModel> newsData) {

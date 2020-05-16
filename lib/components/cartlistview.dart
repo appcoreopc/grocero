@@ -14,6 +14,7 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
   
   Map<String, int> _productCount = Map<String, int>();
   List<ProductListingModel> _productListing = List<ProductListingModel>();
+  int pageIndex = 2;
 
   @override
   void initState() {
@@ -40,7 +41,7 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
             backgroundColor: Appconstant.appDefaultBackgroundColor,
             bottomNavigationBar: NavigationHelper().CreateNavigationBar(
                 this.context,
-                CartProduct(this._productCount, this._productListing, _notificationRenderType))));
+                CartProduct(this._productCount, this._productListing, _notificationRenderType, pageIndex))));
   }
 
   Widget _buildProductListingData(List<ProductListingModel> _productListing) {
@@ -148,6 +149,6 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
 
   void _proceedToCheckOut() {
     NavigationHelper.NavigateTo(this.context, CheckoutPage.routeName,
-        CartProduct(_productCount, _productListing, _notificationRenderType));
+        CartProduct(_productCount, _productListing, _notificationRenderType, 2));
   }
 }

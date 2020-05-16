@@ -2,7 +2,7 @@ import 'package:grocero/cart/notificationRenderType.dart';
 import 'package:grocero/models/productlistingmodel.dart';
 
 class CartProduct {
-  CartProduct(this.productCount, this.productListings, this.notificationRenderType);
+  CartProduct(this.productCount, this.productListings, this.notificationRenderType, this.navigationBarPageIndex);
 
   List<ProductListingModel> productListings;
 

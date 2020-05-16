@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:grocero/cart/cartpage.dart';
 import 'package:grocero/cart/notificationRenderType.dart';
-import 'package:grocero/checkout/checkoutpage.dart';
 import 'package:grocero/home/homepage.dart';
-import 'package:grocero/locations/maps/mylocatiopage.dart';
 import 'package:grocero/models/cartproducts.dart';
 import 'package:grocero/models/productcategory.dart';
 import 'package:grocero/models/productlistingmodel.dart';
 import 'package:grocero/navigations/navigationhelper.dart';
-import 'package:grocero/payment/makepayment.dart';
-import 'package:grocero/products/productlistpage.dart';
+import 'package:grocero/navigations/route.dart';
 import 'package:grocero/services/mock/mockmarkerservice.dart';
 import 'package:grocero/style/appstyle.dart';
 import '../Appconstant.dart';
@@ -28,84 +24,79 @@ class HomePageState extends State<HomePage> {
     _productCategories = MockDataService.getProductCategories();
 
     return MaterialApp(
-        //navigatorKey: navigatorKey,
-        home: Scaffold(
-            appBar: AppBar(
-                title: Text(Appconstant.homePageText,
-                    style: TextStyle(color: Colors.black)),
-                backgroundColor: Appconstant.primaryThemeColor),
-            body: SafeArea(
-                child: Scaffold(
-                    body: FutureBuilder<List<ProductListingModel>>(
-              future: _futureDataSource,
-              builder: (_context, snapshot) {
-                if (snapshot.hasData) {
-                  bodybc = _context;
-                  _productListing = snapshot.data;
-                  return _buildTopSellingLayout(_productListing);
-                } else if (snapshot.hasError) {
-                  return Text("${snapshot.error}");
-                }
-                return CircularProgressIndicator();
-              },
-            ))),
-            bottomNavigationBar: NavigationHelper().CreateNavigationBar(
-                context,
-                CartProduct(productCount, _productListing,
-                    NotificationRenderType.none))),
-        //initialRoute: "/",
-        //     routes: <String, WidgetBuilder> {
+      home: Scaffold(
+          appBar: AppBar(
+              title: Text(Appconstant.homePageText,
+                  style: TextStyle(color: Colors.black)),
+              backgroundColor: Appconstant.primaryThemeColor),
+          body: SafeArea(
+              child: Scaffold(
+                  body: FutureBuilder<List<ProductListingModel>>(
+            future: _futureDataSource,
+            builder: (_context, snapshot) {
+              if (snapshot.hasData) {
+                ///////////////////////////////////////////////////
+                // Noticed the build context being assigned here //
+                ///////////////////////////////////////////////////
+                bodybc = _context;
+                _productListing = snapshot.data;
+                return _buildTopSellingLayout(_productListing);
+              } else if (snapshot.hasError) {
+                return Text("${snapshot.error}");
+              }
+              return CircularProgressIndicator();
+            },
+          ))),
+          bottomNavigationBar: NavigationHelper().CreateNavigationBar(
+              context,
+              CartProduct(
+                  productCount, _productListing, NotificationRenderType.none, pageIndex))),
 
-        // '/explore': (BuildContext context) => FirstScreen(),
-        // '/explore2': (BuildContext context) => SecondScreen(),
-        // '/explore3': (BuildContext context) => FirstScreen(),
-        //    },
-        //     // '/home': (_context) => SecondScreen(),
-        //     // '/explore': (_context) => FirstScreen(),
-        //     // '/cart': (_context) => SecondScreen(),
-        //   //},
-        onGenerateRoute: (settings) {
-          // Setup widget routing /////
-          if (settings.name == HomePage.routeName) {
-            return MaterialPageRoute(
-                builder: (BuildContext context) => HomePage(),
-                maintainState: true,
-                fullscreenDialog: false);
-          } else if (settings.name == MyLocationPage.routeName) {
-            return MaterialPageRoute(
-                builder: (BuildContext context) => MyLocationPage(),
-                maintainState: true,
-                fullscreenDialog: false);
-          } else if (settings.name == ProductListingPage.routeName) {
-            return MaterialPageRoute(
-              builder: (BuildContext context) => ProductListingPage(),
-              maintainState: true,
-              fullscreenDialog: false,
-            );
-          } else if (settings.name == CartPage.routeName) {
-            var cartData = settings.arguments as CartProduct;
-            return MaterialPageRoute(
-              builder: (BuildContext context) => CartPage(cartData),
-              maintainState: true,
-              fullscreenDialog: false,
-            );
-          } else if (settings.name == CheckoutPage.routeName) {
-            var cartData = settings.arguments as CartProduct;
-            return MaterialPageRoute(
-              builder: (BuildContext context) => CheckoutPage(cartData),
-              maintainState: true,
-              fullscreenDialog: false,
-            );
-          } else if (settings.name == MakePaymentPage.routeName) {
-            return MaterialPageRoute(
-              builder: (BuildContext context) => MakePaymentPage(),
-              maintainState: true,
-              fullscreenDialog: false,
-            );
-          } else {
-            return null;
-          }
-        });
+      onGenerateRoute: AppRoutes.setupRoutes,
+
+      // onGenerateRoute: (settings) {
+      //   // Setup widget routing /////
+      //   if (settings.name == HomePage.routeName) {
+      //     return MaterialPageRoute(
+      //         builder: (BuildContext context) => HomePage(),
+      //         maintainState: true,
+      //         fullscreenDialog: false);
+      //   } else if (settings.name == MyLocationPage.routeName) {
+      //     return MaterialPageRoute(
+      //         builder: (BuildContext context) => MyLocationPage(),
+      //         maintainState: true,
+      //         fullscreenDialog: false);
+      //   } else if (settings.name == ProductListingPage.routeName) {
+      //     return MaterialPageRoute(
+      //       builder: (BuildContext context) => ProductListingPage(),
+      //       maintainState: true,
+      //       fullscreenDialog: false,
+      //     );
+      //   } else if (settings.name == CartPage.routeName) {
+      //     var cartData = settings.arguments as CartProduct;
+      //     return MaterialPageRoute(
+      //       builder: (BuildContext context) => CartPage(cartData),
+      //       maintainState: true,
+      //       fullscreenDialog: false,
+      //     );
+      //   } else if (settings.name == CheckoutPage.routeName) {
+      //     var cartData = settings.arguments as CartProduct;
+      //     return MaterialPageRoute(
+      //       builder: (BuildContext context) => CheckoutPage(cartData),
+      //       maintainState: true,
+      //       fullscreenDialog: false,
+      //     );
+      //   } else if (settings.name == MakePaymentPage.routeName) {
+      //     return MaterialPageRoute(
+      //       builder: (BuildContext context) => MakePaymentPage(),
+      //       maintainState: true,
+      //       fullscreenDialog: false,
+      //     );
+      //   } else {
+      //     return null;
+      //   }
+      //}
+    );
   }
 
   Widget _buildTopSellingLayout(List<ProductListingModel> productLists) {
