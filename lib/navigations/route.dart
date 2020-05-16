@@ -40,8 +40,9 @@ class AppRoutes {
         fullscreenDialog: false,
       );
     } else if (settings.name == MakePaymentPage.routeName) {
+        var cartData = settings.arguments as CartProduct;
       return MaterialPageRoute(
-        builder: (BuildContext context) => MakePaymentPage(),
+        builder: (BuildContext context) => MakePaymentPage(cartData),
         maintainState: true,
         fullscreenDialog: false,
       );

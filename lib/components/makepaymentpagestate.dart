@@ -4,11 +4,10 @@ import 'package:grocero/cart/notificationRenderType.dart';
 import 'package:grocero/models/cartproducts.dart';
 import 'package:grocero/models/productlistingmodel.dart';
 import 'package:grocero/navigations/navigationhelper.dart';
-import 'package:grocero/payment/makepayment.dart';
 import 'package:grocero/style/appstyle.dart';
 
-class CheckoutViewState<T extends StatefulWidget> extends State<T> {
-  CheckoutViewState(this._cartProduct);
+class MakePaymentPageState<T extends StatefulWidget> extends State<T> {
+  MakePaymentPageState(this._cartProduct);
 
   List<ProductListingModel> _customerOrderLists;
   Map<String, int> _productCount = Map<String, int>();
@@ -42,17 +41,9 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
       Expanded(
           child: Column(
         children: [
-          Padding(padding: EdgeInsets.fromLTRB(0, 12, 4, 0)),
           _buildCheckoutRowLayout(
-              Appconstant.customerCheckoutNameText, "Maggie", "Update"),
-          _buildCheckoutRowLayout(
-              Appconstant.customerCheckoutPhoneText, "Maggie", "Change"),
-          _buildCheckoutRowLayout(
-              Appconstant.customerCheckoutAddressText, "Maggie", "Change"),
-          _buildCheckoutRowLayout(
-              Appconstant.customerCheckoutDeliveryTimeText, "Maggie", "Change"),
-          _buildCheckoutRowLayout(
-              Appconstant.customerCheckoutTotalText, "", ""),
+              "Payment method", "VISA", "Update"),
+          
         ],
       )),
       Container(
@@ -62,11 +53,10 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
           child: FlatButton(
             color: Appconstant.greenColor,
             textColor: Appconstant.appCheckoutPaymentTextColor,
-            child: Text(Appconstant.makePaymentText,
+            child: Text(Appconstant.completePaymentText,
                 style: AppStyle.checkoutButtonFontContentFontStyle),
             onPressed: () {
-                  _makePayment();
-
+              _makePaymnet();
             },
           ))
     ]);
@@ -95,13 +85,9 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
   Column buildChildLayout(String title, String subtitle) {
     return Column(children: <Widget>[
       Padding(padding: EdgeInsets.all(Appconstant.listViewPadding)),
-      //Text(title, style: AppStyle.listViewContentFontStyle),
       Text(subtitle, style: AppStyle.listViewContentGreyFontStyle),
     ], crossAxisAlignment: CrossAxisAlignment.start);
   }
 
-  void _makePayment() {
-    NavigationHelper.NavigateTo(this.context, MakePaymentPage.routeName,
-        CartProduct(_productCount, null, _notificationRenderType, 0));
-  }
+  void _makePaymnet() {}
 }

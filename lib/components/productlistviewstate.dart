@@ -80,7 +80,7 @@ class ProductListViewState<T extends StatefulWidget> extends State<T> {
         Expanded(
             flex: 1,
             child: Text(productListingData.content,
-                style: AppStyle.listViewContentGreyFontStyle)),
+                style: AppStyle.listViewContentBlackFontStyle)),
         Align(
             alignment: Alignment.centerRight,
             child: ButtonBar(

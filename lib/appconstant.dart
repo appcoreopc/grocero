@@ -18,6 +18,7 @@ class Appconstant {
 
   static String addToCartText = "Add to cart";
   static String makePaymentText = "Make a payment";
+  static String completePaymentText = "Complete payment";
   static String customerCheckoutNameText = "Customer Name";
   static String customerCheckoutDeliveryToText = "Delivery To";
   static String customerCheckoutPhoneText = "Contact";
