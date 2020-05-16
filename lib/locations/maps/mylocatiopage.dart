@@ -11,7 +11,7 @@ import 'package:grocero/payment/makepayment.dart';
 import 'package:grocero/products/productlistpage.dart';
 
 class MyLocationPage extends StatefulWidget {
-  static String routeName = "MyLocationChooser";
+  static String routeName = "/myLocationChooser";
 
   @override
   _MyLocationPageState createState() => _MyLocationPageState();

@@ -19,24 +19,28 @@ class HomePageState extends State<HomePage> {
   Map<String, int> productCount = Map<String, int>();
   List<ProductListingModel> _productListing;
   Future<List<ProductCategory>> _productCategories;
+  int pageIndex = 0;
+  BuildContext bodybc;
 
   @override
-  Widget build(BuildContext _context) {
+  Widget build(BuildContext context) {
     _futureDataSource = MockDataService.GetProductListing();
     _productCategories = MockDataService.getProductCategories();
 
     return MaterialApp(
+        //navigatorKey: navigatorKey,
         home: Scaffold(
             appBar: AppBar(
-              title: Text(Appconstant.homePageText),
-              backgroundColor: Colors.green[600],
-            ),
+                title: Text(Appconstant.homePageText,
+                    style: TextStyle(color: Colors.black)),
+                backgroundColor: Appconstant.primaryThemeColor),
             body: SafeArea(
                 child: Scaffold(
                     body: FutureBuilder<List<ProductListingModel>>(
               future: _futureDataSource,
-              builder: (context, snapshot) {
+              builder: (_context, snapshot) {
                 if (snapshot.hasData) {
+                  bodybc = _context;
                   _productListing = snapshot.data;
                   return _buildTopSellingLayout(_productListing);
                 } else if (snapshot.hasError) {
@@ -46,10 +50,22 @@ class HomePageState extends State<HomePage> {
               },
             ))),
             bottomNavigationBar: NavigationHelper().CreateNavigationBar(
-                this.context,
+                context,
                 CartProduct(productCount, _productListing,
                     NotificationRenderType.none))),
+        //initialRoute: "/",
+        //     routes: <String, WidgetBuilder> {
+
+        // '/explore': (BuildContext context) => FirstScreen(),
+        // '/explore2': (BuildContext context) => SecondScreen(),
+        // '/explore3': (BuildContext context) => FirstScreen(),
+        //    },
+        //     // '/home': (_context) => SecondScreen(),
+        //     // '/explore': (_context) => FirstScreen(),
+        //     // '/cart': (_context) => SecondScreen(),
+        //   //},
         onGenerateRoute: (settings) {
+          // Setup widget routing /////
           if (settings.name == HomePage.routeName) {
             return MaterialPageRoute(
                 builder: (BuildContext context) => HomePage(),
@@ -97,11 +113,16 @@ class HomePageState extends State<HomePage> {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Padding(padding: EdgeInsets.all(10)),
-        Text(
-          Appconstant.homePageTopSellingText,
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        Padding(padding: EdgeInsets.all(8)),
+        Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+                padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                child: Text(
+                  Appconstant.homePageTopSellingText,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(fontSize: Appconstant.homePageTitleFontSize),
+                ))),
+        Padding(padding: EdgeInsets.all(4)),
         Expanded(
           child: ListView.builder(
             shrinkWrap: true,
@@ -111,17 +132,25 @@ class HomePageState extends State<HomePage> {
               child: Center(
                   child: Column(children: <Widget>[
                 Image.network(productLists[index].urlToImage,
-                    height: 200, width: 200),
-                Text(productLists[index].title)
+                    height: 160, width: 180),
+                Text(productLists[index].title),
+                Text(productLists[index].description,
+                    style: TextStyle(
+                        color: Appconstant.textColorSecondaryTextColor)),
+                Padding(padding: EdgeInsets.fromLTRB(0, 2, 0, 4)),
               ])),
             ),
           ),
         ),
         Padding(padding: EdgeInsets.all(8)),
-        Text(
-          Appconstant.homePageExploreByCategoryText,
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
+        Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+                padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                child: Text(
+                  Appconstant.homePageExploreByCategoryText,
+                  style: TextStyle(fontSize: Appconstant.homePageTitleFontSize),
+                ))),
         Expanded(
             child: FutureBuilder<List<ProductCategory>>(
           future: _productCategories,
@@ -141,48 +170,13 @@ class HomePageState extends State<HomePage> {
   Widget buildChildLayout(ProductListingModel productListingData) {
     return Row(children: <Widget>[
       Image.network(productListingData.urlToImage, width: 20, height: 20),
-      //Padding(padding: EdgeInsets.all(Appconstant.listViewPadding)),
       Text(productListingData.title, style: AppStyle.listViewContentFontStyle),
-      // Padding(padding: EdgeInsets.all(Appconstant.listViewPadding)),
-      // Text(productListingData.description,
-      //     style: AppStyle.listViewContentFontStyle),
-      // Text(productListingData.content,
-      //     style: AppStyle.listViewContentFontStyle),
-      // ButtonBar(
-      //   children: <Widget>[
-      //     //_buildProductOrderCount(productListingData.title),
-      //     FlatButton(
-      //       color: Appconstant.appDefaultBackgroundColor,
-      //       child: Text(Appconstant.addToCartText),
-      //       onPressed: () {
-      //         //_addProduct(productListingData.title, 1);
-      //       },
-      //     ),
-      //   ],
-      // )
     ], crossAxisAlignment: CrossAxisAlignment.start);
   }
 
-  // Widget _buildCategoryListView(List<ProductCategory> productLists) {
-  //   return ListView.builder(
-  //     shrinkWrap: true,
-  //     itemCount: productLists.length,
-  //     itemBuilder: (ctx, index) {
-  //       return Card(
-  //         child: ListTile(
-  //             title: Text(productLists[index].title),
-  //             subtitle: Text(productLists[index].description)),
-  //       );
-  //     },
-  //   );
-  // }
-
   Widget _buildCategoryListView(List<ProductCategory> category) {
     return GridView.count(
-      // crossAxisCount is the number of columns
-      crossAxisCount: 2,
-      //shrinkWrap: true,
-      // This creates two columns with two items in each column
+      crossAxisCount: Appconstant.gridDefaultColumnSize,
       children: List.generate(category.length, (index) {
         return Center(
             child: Column(children: <Widget>[
@@ -190,11 +184,52 @@ class HomePageState extends State<HomePage> {
           Text(
             category[index].title,
             style: Theme.of(context).textTheme.title,
-          ), 
+          ),
           Padding(padding: EdgeInsets.all(10)),
           Image.network(category[index].imageUrl, height: 100, width: 100)
         ]));
       }),
+    );
+  }
+}
+
+class FirstScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('First Screen'),
+      ),
+      body: Center(
+        child: RaisedButton(
+          child: Text('Launch screen'),
+          onPressed: () {
+            // Navigate to the second screen using a named route.
+            Navigator.pushNamed(context, '/second');
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class SecondScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Second Screen definitely my second screen here ! aahahah"),
+      ),
+      body: Center(
+        child: RaisedButton(
+          onPressed: () {
+            // Navigate back to the first screen by popping the current route
+            // off the stack.
+            Navigator.pop(context);
+          },
+          child: Text('Go back!'),
+        ),
+      ),
     );
   }
 }

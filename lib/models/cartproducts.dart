@@ -11,4 +11,7 @@ class CartProduct {
 
   NotificationRenderType notificationRenderType;
 
+  // for setting up navigationbar 
+  int navigationBarPageIndex = 0;
+
 }
