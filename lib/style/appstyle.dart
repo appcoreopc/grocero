@@ -8,7 +8,7 @@ class AppStyle {
       TextStyle(fontSize: 16.0, color: Colors.black);
 
  static final TextStyle listViewContentGreyFontStyle =
-      TextStyle(fontSize: 14.0, color: Appconstant.allBlack);
+      TextStyle(fontSize: 14.0, color: Appconstant.allGreyColor);
 
 static final TextStyle listViewDescriptionFontStyle =
       TextStyle(fontSize: 14.0, color: Appconstant.allGreyColor);

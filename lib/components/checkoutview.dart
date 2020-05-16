@@ -13,8 +13,9 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
   Map<String, int> _productCount = Map<String, int>();
   CartProduct _cartProduct;
   NotificationRenderType _notificationRenderType = NotificationRenderType.none;
-  int pageIndex = 3; 
-  
+  int pageIndex =
+      2; // *** Keep the selecte page index to cart, as there is no page ****
+
   @override
   void initState() {
     super.initState();
@@ -28,16 +29,17 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
     return SafeArea(
         child: Scaffold(
             body: _buildCustomerCheckoutLayout(_customerOrderLists),
-            backgroundColor: Appconstant.appDefaultBackgroundColor,
+            backgroundColor: Appconstant.allWhite,
             bottomNavigationBar: NavigationHelper().CreateNavigationBar(
                 this.context,
-                CartProduct(_productCount, this._customerOrderLists, _notificationRenderType, pageIndex))));
+                CartProduct(_productCount, this._customerOrderLists,
+                    _notificationRenderType, pageIndex))));
   }
 
   Widget _buildCustomerCheckoutLayout(List<ProductListingModel> newsData) {
     return Column(children: <Widget>[
       Expanded(
-          child: Column(
+        child: Column(
         children: [
           _buildCheckoutRowLayout(
               Appconstant.customerCheckoutNameText, "Maggie", "Update"),
@@ -56,7 +58,7 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
           width: MediaQuery.of(context).size.width,
           height: 60,
           child: FlatButton(
-            color: Appconstant.appCheckoutPaymentBackgroundColor,
+            color: Appconstant.greenColor,
             textColor: Appconstant.appCheckoutPaymentTextColor,
             child: Text(Appconstant.makePaymentText,
                 style: AppStyle.checkoutButtonFontContentFontStyle),
@@ -71,16 +73,17 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
       child: ListTile(
         title: Text(title, style: AppStyle.listViewTitleFontStyle),
         subtitle: Padding(
-            padding: EdgeInsets.fromLTRB(0, 12, 0, 12),
+            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
             child: buildChildLayout(title, subtitle)),
         trailing: FlatButton(
           child: Text(
             commandString,
           ),
+          textColor: Appconstant.greenColor,
           onPressed: () => {},
         ),
       ),
-      color: Appconstant.appDefaultTextColor,
+      color: Appconstant.allWhite,
     );
   }
 

@@ -149,6 +149,6 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
 
   void _proceedToCheckOut() {
     NavigationHelper.NavigateTo(this.context, CheckoutPage.routeName,
-        CartProduct(_productCount, _productListing, _notificationRenderType, 2));
+        CartProduct(_productCount, _productListing, _notificationRenderType, 0));
   }
 }

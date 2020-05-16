@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:grocero/Appconstant.dart';
 import 'package:grocero/cart/cartpage.dart';
 import 'package:grocero/cart/notificationRenderType.dart';
+import 'package:grocero/checkout/checkoutpage.dart';
 import 'package:grocero/home/homepage.dart';
 import 'package:grocero/models/cartproducts.dart';
 import 'package:grocero/products/productlistpage.dart';
@@ -77,6 +78,11 @@ class NavigationHelper {
           {
             NavigationHelper.NavigateTo(
                 context, CartPage.routeName, cartProduct)
+          }
+        else if (idx == 3)
+          {
+            NavigationHelper.NavigateTo(
+                context, CheckoutPage.routeName, cartProduct)
           }
       },
     );
