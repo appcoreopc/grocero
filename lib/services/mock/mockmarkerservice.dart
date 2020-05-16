@@ -31,7 +31,7 @@ class MockDataService {
         "HasteCafe",
         "Latte",
         "HasteCafe special Latte",
-        "Beans imported from South America",
+        "Beans imported from South America with a twist",
         "https://elisabeth.co.nz/wp-content/uploads/2020/04/latte.jpg",
         "http://weburl"));
 
@@ -39,7 +39,7 @@ class MockDataService {
         "HasteCafe",
         "Americano",
         "HasteCafe special Americano",
-        "Beans imported from South America",
+        "Beans imported from South America, best of it's class",
         "https://elisabeth.co.nz/wp-content/uploads/2020/04/latte.jpg",
         "http://weburl"));
 
@@ -63,7 +63,7 @@ class MockDataService {
         "HasteCafe",
         "Long White",
         "HasteCafe special Long Black",
-        "Beans imported from South America",
+        "Beans imported from South America, ultimate drinking pleasure",
         "https://elisabeth.co.nz/wp-content/uploads/2020/04/flat-white.jpg",
         "http://weburl."));
 

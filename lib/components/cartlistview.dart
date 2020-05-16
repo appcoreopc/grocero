@@ -51,7 +51,6 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
               itemCount: _productListing.length,
               padding: const EdgeInsets.all(12.0),
               itemBuilder: (context, index) {
-                if (index.isOdd) return Divider();
                 return _buildRow(_productListing[index], index);
               })),
       Container(
@@ -59,7 +58,7 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
           width: MediaQuery.of(context).size.width,
           height: 60,
           child: FlatButton(
-            color: Appconstant.appCheckoutPaymentBackgroundColor,
+            color: Appconstant.greenColor,
             textColor: Appconstant.appCheckoutPaymentTextColor,
             child: Text(Appconstant.productListingProceedToCheckout,
                 style: AppStyle.checkoutButtonFontContentFontStyle),
@@ -87,25 +86,25 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
     return Column(children: <Widget>[
       Image.network(productListingData.urlToImage),
       Padding(padding: EdgeInsets.all(Appconstant.listViewPadding)),
-      Text(productListingData.title, style: AppStyle.listViewContentFontStyle),
+      Text(productListingData.title, style: AppStyle.listViewContentGreyFontStyle),
       Padding(padding: EdgeInsets.all(Appconstant.listViewPadding)),
       Text(productListingData.description,
-          style: AppStyle.listViewContentFontStyle),
+          style: AppStyle.listViewContentGreyFontStyle),
       Text(productListingData.content,
-          style: AppStyle.listViewContentFontStyle),
+          style: AppStyle.listViewContentGreyFontStyle),
       ButtonBar(
         children: <Widget>[
           FlatButton(
-            color: Appconstant.appDefaultBackgroundColor,
-            child: Text(Appconstant.addProductToCartText),
+            color: Appconstant.greenColor,
+            child: Text(Appconstant.addProductToCartText, style:  AppStyle.buttonTextStyle),
             onPressed: () {
               _addProduct(productListingData.title, 1);
             },
           ),
           _buildProductOrderCount(productListingData.title),
           FlatButton(
-            color: Appconstant.appDefaultBackgroundColor,
-            child: Text(Appconstant.removeProuctFromCartText),
+            color: Appconstant.greenColor,
+            child: Text(Appconstant.removeProuctFromCartText, style:  AppStyle.buttonTextStyle),
             onPressed: () {
               _removeProduct(productListingData.title, 1);
             },

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grocero/cart/cartpage.dart';
 import 'package:grocero/cart/notificationRenderType.dart';
 import 'package:grocero/home/homepage.dart';
 import 'package:grocero/models/cartproducts.dart';
@@ -6,6 +7,7 @@ import 'package:grocero/models/productcategory.dart';
 import 'package:grocero/models/productlistingmodel.dart';
 import 'package:grocero/navigations/navigationhelper.dart';
 import 'package:grocero/navigations/route.dart';
+import 'package:grocero/products/productlistpage.dart';
 import 'package:grocero/services/mock/mockmarkerservice.dart';
 import 'package:grocero/style/appstyle.dart';
 import '../Appconstant.dart';
@@ -17,6 +19,8 @@ class HomePageState extends State<HomePage> {
   Future<List<ProductCategory>> _productCategories;
   int pageIndex = 0;
   BuildContext bodybc;
+  BuildContext globalbc;
+  final navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
@@ -47,55 +51,13 @@ class HomePageState extends State<HomePage> {
               return CircularProgressIndicator();
             },
           ))),
-          bottomNavigationBar: NavigationHelper().CreateNavigationBar(
-              context,
-              CartProduct(
-                  productCount, _productListing, NotificationRenderType.none, pageIndex))),
-
+          bottomNavigationBar: createBottomNavigationBar(CartProduct(
+              productCount,
+              _productListing,
+              NotificationRenderType.none,
+              pageIndex))
+          ),
       onGenerateRoute: AppRoutes.setupRoutes,
-
-      // onGenerateRoute: (settings) {
-      //   // Setup widget routing /////
-      //   if (settings.name == HomePage.routeName) {
-      //     return MaterialPageRoute(
-      //         builder: (BuildContext context) => HomePage(),
-      //         maintainState: true,
-      //         fullscreenDialog: false);
-      //   } else if (settings.name == MyLocationPage.routeName) {
-      //     return MaterialPageRoute(
-      //         builder: (BuildContext context) => MyLocationPage(),
-      //         maintainState: true,
-      //         fullscreenDialog: false);
-      //   } else if (settings.name == ProductListingPage.routeName) {
-      //     return MaterialPageRoute(
-      //       builder: (BuildContext context) => ProductListingPage(),
-      //       maintainState: true,
-      //       fullscreenDialog: false,
-      //     );
-      //   } else if (settings.name == CartPage.routeName) {
-      //     var cartData = settings.arguments as CartProduct;
-      //     return MaterialPageRoute(
-      //       builder: (BuildContext context) => CartPage(cartData),
-      //       maintainState: true,
-      //       fullscreenDialog: false,
-      //     );
-      //   } else if (settings.name == CheckoutPage.routeName) {
-      //     var cartData = settings.arguments as CartProduct;
-      //     return MaterialPageRoute(
-      //       builder: (BuildContext context) => CheckoutPage(cartData),
-      //       maintainState: true,
-      //       fullscreenDialog: false,
-      //     );
-      //   } else if (settings.name == MakePaymentPage.routeName) {
-      //     return MaterialPageRoute(
-      //       builder: (BuildContext context) => MakePaymentPage(),
-      //       maintainState: true,
-      //       fullscreenDialog: false,
-      //     );
-      //   } else {
-      //     return null;
-      //   }
-      //}
     );
   }
 
@@ -161,7 +123,8 @@ class HomePageState extends State<HomePage> {
   Widget buildChildLayout(ProductListingModel productListingData) {
     return Row(children: <Widget>[
       Image.network(productListingData.urlToImage, width: 20, height: 20),
-      Text(productListingData.title, style: AppStyle.listViewContentFontStyle),
+      Text(productListingData.title,
+          style: AppStyle.listViewContentGreyFontStyle),
     ], crossAxisAlignment: CrossAxisAlignment.start);
   }
 
@@ -182,45 +145,61 @@ class HomePageState extends State<HomePage> {
       }),
     );
   }
-}
 
-class FirstScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('First Screen'),
-      ),
-      body: Center(
-        child: RaisedButton(
-          child: Text('Launch screen'),
-          onPressed: () {
-            // Navigate to the second screen using a named route.
-            Navigator.pushNamed(context, '/second');
-          },
-        ),
-      ),
-    );
-  }
-}
+  Widget createBottomNavigationBar(CartProduct cartProduct) {
+    Color homeColor = Appconstant.allGreyColor;
+    Color exploreColor = Appconstant.allGreyColor;
+    Color cartColor = Appconstant.allGreyColor;
 
-class SecondScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Second Screen definitely my second screen here ! aahahah"),
-      ),
-      body: Center(
-        child: RaisedButton(
-          onPressed: () {
-            // Navigate back to the first screen by popping the current route
-            // off the stack.
-            Navigator.pop(context);
-          },
-          child: Text('Go back!'),
+    if (cartProduct.navigationBarPageIndex == 0) {
+      homeColor = Appconstant.greenColor;
+    }
+
+    if (cartProduct.navigationBarPageIndex == 1) {
+      exploreColor = Appconstant.greenColor;
+    }
+
+    if (cartProduct.navigationBarPageIndex == 2) {
+      cartColor = Appconstant.greenColor;
+    }
+
+    return BottomNavigationBar(
+      items: <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: NavigationHelper.createNotification(Appconstant.homeMenuText,
+              Icons.home, NotificationRenderType.none, homeColor),
+          title: Text(Appconstant.homeMenuText),
         ),
-      ),
+        BottomNavigationBarItem(
+          icon: NavigationHelper.createNotification(Appconstant.exploreMenuText,
+              Icons.search, NotificationRenderType.none, exploreColor),
+          title: Text(Appconstant.exploreMenuText),
+        ),
+        BottomNavigationBarItem(
+          icon: NavigationHelper.createNotification(
+              Appconstant.cartMenuText,
+              Icons.shopping_cart,
+              cartProduct.notificationRenderType,
+              cartColor),
+          title: Text(Appconstant.cartMenuText),
+        ),
+      ],
+      currentIndex: cartProduct.navigationBarPageIndex,
+      selectedItemColor: Appconstant.greenColor,
+      onTap: (idx) => {
+        if (idx == 0)
+          {NavigationHelper.NavigateTo(bodybc, HomePage.routeName, null)}
+        else if (idx == 1)
+          {
+            NavigationHelper.NavigateTo(
+                bodybc, ProductListingPage.routeName, cartProduct)
+          }
+        else if (idx == 2)
+          {
+            NavigationHelper.NavigateTo(
+                context, CartPage.routeName, cartProduct)
+          }
+      },
     );
   }
 }

@@ -88,7 +88,7 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
     return Column(children: <Widget>[
       Padding(padding: EdgeInsets.all(Appconstant.listViewPadding)),
       //Text(title, style: AppStyle.listViewContentFontStyle),
-      Text(subtitle, style: AppStyle.listViewContentFontStyle),
+      Text(subtitle, style: AppStyle.listViewContentGreyFontStyle),
     ], crossAxisAlignment: CrossAxisAlignment.start);
   }
 }

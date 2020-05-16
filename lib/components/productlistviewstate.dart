@@ -12,9 +12,9 @@ class ProductListViewState<T extends StatefulWidget> extends State<T> {
   Future<List<ProductListingModel>> _futureDataSource;
   Map<String, int> productCount = Map<String, int>();
   List<ProductListingModel> _productListing;
-  NotificationRenderType _notificationRenderingType = NotificationRenderType.none; 
+  NotificationRenderType _notificationRenderingType =
+      NotificationRenderType.none;
   int pageIndex = 1;
- 
 
   @override
   void initState() {
@@ -40,13 +40,12 @@ class ProductListViewState<T extends StatefulWidget> extends State<T> {
                 return CircularProgressIndicator();
               },
             ),
-            backgroundColor: Appconstant.appDefaultBackgroundColor,
+            backgroundColor: Appconstant.allWhite,
             bottomNavigationBar: NavigationHelper().CreateNavigationBar(
-                this.context,
-                CartProduct(this.productCount, 
-                this._productListing, 
-                _notificationRenderingType, pageIndex),
-                )));
+              this.context,
+              CartProduct(this.productCount, this._productListing,
+                  _notificationRenderingType, pageIndex),
+            )));
   }
 
   Widget _buildProductListingData(List<ProductListingModel> productLists) {
@@ -54,7 +53,6 @@ class ProductListViewState<T extends StatefulWidget> extends State<T> {
         itemCount: productLists.length,
         padding: const EdgeInsets.all(12.0),
         itemBuilder: (context, i) {
-          if (i.isOdd) return Divider();
           return _buildRow(productLists[i]);
         });
   }
@@ -66,7 +64,7 @@ class ProductListViewState<T extends StatefulWidget> extends State<T> {
             padding: EdgeInsets.fromLTRB(0, 12, 0, 12),
             child: buildChildLayout(productListingData)),
       ),
-      color: Appconstant.appDefaultTextColor,
+      color: Appconstant.allWhite,
     );
   }
 
@@ -74,25 +72,31 @@ class ProductListViewState<T extends StatefulWidget> extends State<T> {
     return Column(children: <Widget>[
       Image.network(productListingData.urlToImage),
       Padding(padding: EdgeInsets.all(Appconstant.listViewPadding)),
-      Text(productListingData.title, style: AppStyle.listViewContentFontStyle),
-      Padding(padding: EdgeInsets.all(Appconstant.listViewPadding)),
+      Text(productListingData.title, style: AppStyle.listViewTitleFontStyle),
+      Padding(padding: EdgeInsets.fromLTRB(0, 8, 0, 0)),
       Text(productListingData.description,
-          style: AppStyle.listViewContentFontStyle),
-      Text(productListingData.content,
-          style: AppStyle.listViewContentFontStyle),
-      ButtonBar(
-        children: <Widget>[
-          _buildProductOrderCount(productListingData.title),
-          FlatButton(
-            color: Appconstant.appDefaultBackgroundColor,
-            child: Text(Appconstant.addToCartText),
-            onPressed: () {
-              _addProduct(productListingData.title, 1);
-
-            },
-          ),
-        ],
-      )
+          style: AppStyle.listViewDescriptionFontStyle),
+      Row(children: <Widget>[
+        Expanded(
+            flex: 1,
+            child: Text(productListingData.content,
+                style: AppStyle.listViewContentGreyFontStyle)),
+        Align(
+            alignment: Alignment.centerRight,
+            child: ButtonBar(
+              children: <Widget>[
+                //_buildProductOrderCount(productListingData.title),
+                FlatButton(
+                  color: Appconstant.greenColor,
+                  child: Text(Appconstant.addToCartText,
+                      style: AppStyle.buttonTextStyle),
+                  onPressed: () {
+                    _addProduct(productListingData.title, 1);
+                  },
+                ),
+              ],
+            )),
+      ])
     ], crossAxisAlignment: CrossAxisAlignment.start);
   }
 

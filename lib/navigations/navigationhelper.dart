@@ -18,7 +18,7 @@ class NavigationHelper {
       arguments: argumentType,
     );
   }
-
+  
   //////////////////////////////////
   ///
   /// Creates NavigationBar button
@@ -87,7 +87,7 @@ class NavigationHelper {
   ///  icons and text
   ///////////////////////////////
 
-  Widget createNotification(String textToRender, IconData iconToRender,
+  static Widget createNotification(String textToRender, IconData iconToRender,
       NotificationRenderType notificationRenderType, Color targetColor) {
     switch (notificationRenderType) {
       case NotificationRenderType.simpleDot:
