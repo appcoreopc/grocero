@@ -38,7 +38,7 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
     return SafeArea(
         child: Scaffold(
             body: _buildProductListingData(this._productListing),
-            backgroundColor: Appconstant.appDefaultBackgroundColor,
+            backgroundColor: Appconstant.allWhite,
             bottomNavigationBar: NavigationHelper().CreateNavigationBar(
                 this.context,
                 CartProduct(this._productCount, this._productListing, _notificationRenderType, pageIndex))));
@@ -60,7 +60,7 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
           child: FlatButton(
             color: Appconstant.greenColor,
             textColor: Appconstant.appCheckoutPaymentTextColor,
-            child: Text(Appconstant.productListingProceedToCheckout,
+            child: Text(Appconstant.proceedToCheckout,
                 style: AppStyle.checkoutButtonFontContentFontStyle),
             onPressed: () {
               _proceedToCheckOut();
@@ -78,7 +78,7 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
             padding: EdgeInsets.fromLTRB(0, 12, 0, 12),
             child: buildChildLayout(productListingData)),
       ),
-      color: Colors.grey,
+      color: Appconstant.allWhite,
     );
   }
 
@@ -86,10 +86,11 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
     return Column(children: <Widget>[
       Image.network(productListingData.urlToImage),
       Padding(padding: EdgeInsets.all(Appconstant.listViewPadding)),
-      Text(productListingData.title, style: AppStyle.listViewContentGreyFontStyle),
+      Text(productListingData.title, style: AppStyle.listViewTitleFontStyle),
       Padding(padding: EdgeInsets.all(Appconstant.listViewPadding)),
       Text(productListingData.description,
-          style: AppStyle.listViewContentGreyFontStyle),
+          style: AppStyle.listViewDescriptionFontStyle),
+      Padding(padding: EdgeInsets.all(Appconstant.listViewPadding)),
       Text(productListingData.content,
           style: AppStyle.listViewContentGreyFontStyle),
       ButtonBar(

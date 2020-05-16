@@ -17,7 +17,7 @@ static final TextStyle checkoutFontContentFontStyle =
       TextStyle(fontSize: 24.0, color: Colors.grey);
 
 static final TextStyle checkoutButtonFontContentFontStyle =
-      TextStyle(fontSize: 18.0, color: Colors.black);
+      TextStyle(fontSize: 18.0, color: Appconstant.allWhite);
 
 static final TextStyle buttonTextStyle =
       TextStyle(fontSize: 14.0, color: Appconstant.allWhite);
