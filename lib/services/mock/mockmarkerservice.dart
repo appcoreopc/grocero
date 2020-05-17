@@ -33,7 +33,7 @@ class MockDataService {
         "HasteCafe special Latte",
         "Beans imported from South America with a twist. This is something that keeps you going all day",
         "https://elisabeth.co.nz/wp-content/uploads/2020/04/latte.jpg",
-        "http://weburl"));
+        "http://weburl", 5.00));
 
     targetList.add(ProductListingModel(
         "HasteCafe",
@@ -41,7 +41,7 @@ class MockDataService {
         "HasteCafe special Americano",
         "Beans imported from South America, best of it's class and keeps you craving for more and more.",
         "https://elisabeth.co.nz/wp-content/uploads/2020/04/latte.jpg",
-        "http://weburl"));
+        "http://weburl", 5.00));
 
     targetList.add(ProductListingModel(
         "HasteCafe",
@@ -49,7 +49,7 @@ class MockDataService {
         "HasteCafe special Long Black",
         "Beans imported from South America. Roasted to perfection and gives extra aromatic kick.",
         "https://elisabeth.co.nz/wp-content/uploads/2020/04/Vanilla-Chai.jpg",
-        "http://weburl."));
+        "http://weburl.", 4.50));
 
     targetList.add(ProductListingModel(
         "HasteCafe",
@@ -57,7 +57,7 @@ class MockDataService {
         "HasteCafe special Long Black",
         "Beans imported from South America. The best blend that you can ever get from here.",
         "https://elisabeth.co.nz/wp-content/uploads/2020/04/flat-white.jpg",
-        "http://weburl."));
+        "http://weburl.", 4.50));
 
     targetList.add(ProductListingModel(
         "HasteCafe",
@@ -65,7 +65,7 @@ class MockDataService {
         "HasteCafe special Long Black",
         "Beans imported from South America, ultimate drinking pleasure",
         "https://elisabeth.co.nz/wp-content/uploads/2020/04/flat-white.jpg",
-        "http://weburl."));
+        "http://weburl.", 3.0));
 
     return Future.value(targetList);
   }

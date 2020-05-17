@@ -24,4 +24,7 @@ static final TextStyle checkoutButtonFontContentFontStyle =
 
 static final TextStyle buttonTextStyle =
       TextStyle(fontSize: 14.0, color: Appconstant.allWhite);
+
+ static final TextStyle totalAmountContentGreyFontStyle =
+      TextStyle(fontSize: 20.0, color: Appconstant.allGreyColor);
 }

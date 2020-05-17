@@ -14,4 +14,6 @@ class CartProduct {
   // for setting up navigationbar 
   int navigationBarPageIndex = 0;
 
+  double totalAmount; 
+
 }

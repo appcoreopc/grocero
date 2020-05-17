@@ -16,6 +16,7 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
   NotificationRenderType _notificationRenderType = NotificationRenderType.none;
   int pageIndex =
       2; // *** Keep the selecte page index to cart, as there is no page ****
+  double totalAmount = 0;
 
   @override
   void initState() {
@@ -27,8 +28,14 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
 
   @override
   Widget build(BuildContext context) {
+    calculateTotal();
+
     return SafeArea(
         child: Scaffold(
+            appBar: AppBar(
+                title: Text("Shipping info",
+                    style: TextStyle(color: Colors.black)),
+                backgroundColor: Appconstant.primaryThemeColor),
             body: _buildCustomerCheckoutLayout(_customerOrderLists),
             backgroundColor: Appconstant.allWhite,
             bottomNavigationBar: NavigationHelper().CreateNavigationBar(
@@ -51,8 +58,8 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
               Appconstant.customerCheckoutAddressText, "Maggie", "Change"),
           _buildCheckoutRowLayout(
               Appconstant.customerCheckoutDeliveryTimeText, "Maggie", "Change"),
-          _buildCheckoutRowLayout(
-              Appconstant.customerCheckoutTotalText, "", ""),
+          _buildTotalCheckoutRowLayout(Appconstant.customerCheckoutTotalText,
+              totalAmount.toString(), ""),
         ],
       )),
       Container(
@@ -65,8 +72,7 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
             child: Text(Appconstant.makePaymentText,
                 style: AppStyle.checkoutButtonFontContentFontStyle),
             onPressed: () {
-                  _makePayment();
-
+              _makePayment();
             },
           ))
     ]);
@@ -92,16 +98,63 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
     );
   }
 
+  Widget _buildTotalCheckoutRowLayout(
+      String title, String subtitle, String commandString) {
+    return Ink(
+      child: ListTile(
+        title: Text(title, style: AppStyle.listViewTitleFontStyle),
+        subtitle: Padding(
+            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+            child: buildChildLayout(title, subtitle)),
+        trailing: FlatButton(
+          child: Text(
+            commandString,
+          ),
+          textColor: Appconstant.greenColor,
+          onPressed: () => {},
+        ),
+      ),
+      color: Appconstant.allWhite,
+    );
+  }
+
   Column buildChildLayout(String title, String subtitle) {
     return Column(children: <Widget>[
       Padding(padding: EdgeInsets.all(Appconstant.listViewPadding)),
-      //Text(title, style: AppStyle.listViewContentFontStyle),
       Text(subtitle, style: AppStyle.listViewContentGreyFontStyle),
     ], crossAxisAlignment: CrossAxisAlignment.start);
   }
 
+  Column buildTotalAmountChildLayout(String title, String subtitle) {
+    return Column(children: <Widget>[
+      Padding(padding: EdgeInsets.all(Appconstant.listViewPadding)),
+      Text(subtitle, style: AppStyle.totalAmountContentGreyFontStyle),
+    ], crossAxisAlignment: CrossAxisAlignment.start);
+  }
+
   void _makePayment() {
-    NavigationHelper.NavigateTo(this.context, MakePaymentPage.routeName,
-        CartProduct(_productCount, null, _notificationRenderType, 0));
+    NavigationHelper.NavigateTo(
+        this.context, MakePaymentPage.routeName, this._cartProduct);
+  }
+
+  void calculateTotal() {
+    double totalAmountToPay = 0;
+    for (var element in _productCount.entries) {
+      if (_customerOrderLists != null && _customerOrderLists.isNotEmpty) {
+        var productItem =
+            _customerOrderLists.singleWhere((a) => a.title == element.key);
+
+        if (productItem.price > 0) {
+          var subtotal = productItem.price * element.value;
+          totalAmountToPay += subtotal;
+        }
+      }
+    }
+
+    this._cartProduct.totalAmount = totalAmount;
+
+    setState(() {
+      totalAmount = totalAmountToPay;
+    });
   }
 }
