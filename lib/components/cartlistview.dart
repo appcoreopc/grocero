@@ -6,12 +6,13 @@ import 'package:grocero/models/productlistingmodel.dart';
 import 'package:grocero/navigations/navigationhelper.dart';
 import 'package:grocero/style/appstyle.dart';
 import '../Appconstant.dart';
+import 'appbar/buttonComponent.dart';
 
 class CartListViewState<T extends StatefulWidget> extends State<T> {
   CartListViewState(this._cartProduct);
   CartProduct _cartProduct;
   NotificationRenderType _notificationRenderType = NotificationRenderType.none;
-  
+
   Map<String, int> _productCount = Map<String, int>();
   List<ProductListingModel> _productListing = List<ProductListingModel>();
   int pageIndex = 2;
@@ -41,7 +42,8 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
             backgroundColor: Appconstant.allWhite,
             bottomNavigationBar: NavigationHelper().CreateNavigationBar(
                 this.context,
-                CartProduct(this._productCount, this._productListing, _notificationRenderType, pageIndex))));
+                CartProduct(this._productCount, this._productListing,
+                    _notificationRenderType, pageIndex))));
   }
 
   Widget _buildProductListingData(List<ProductListingModel> _productListing) {
@@ -53,20 +55,42 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
               itemBuilder: (context, index) {
                 return _buildRow(_productListing[index], index);
               })),
-      Container(
-          color: Colors.transparent,
-          width: MediaQuery.of(context).size.width,
-          height: 60,
-          child: FlatButton(
-            color: Appconstant.greenColor,
-            textColor: Appconstant.appCheckoutPaymentTextColor,
-            child: Text(Appconstant.proceedToCheckout,
-                style: AppStyle.checkoutButtonFontContentFontStyle),
-            onPressed: () {
-              _proceedToCheckOut();
-            },
-          ))
+              
+      ButtonComponent.createExtendedButton(context, _proceedToCheckOut),
+      //        createExtendedButton(context, _proceedToCheckOut),
+      ///// Big button bar at the bottom //////
+      // Container(
+      //     color: Colors.transparent,
+      //     width: MediaQuery.of(context).size.width,
+      //     height: 60,
+      //     child: FlatButton(
+      //       color: Appconstant.greenColor,
+      //       textColor: Appconstant.appCheckoutPaymentTextColor,
+      //       child: Text(Appconstant.proceedToCheckout,
+      //           style: AppStyle.checkoutButtonFontContentFontStyle),
+      //       onPressed: () {
+      //         _proceedToCheckOut();
+      //       },
+      //     )
+      //   )
     ]);
+  }
+
+  Widget createExtendedButton(
+      BuildContext ctx, Function _proceedToCheckOutFunction) {
+    return Container(
+        color: Colors.transparent,
+        width: MediaQuery.of(ctx).size.width,
+        height: 60,
+        child: FlatButton(
+          color: Appconstant.greenColor,
+          textColor: Appconstant.appCheckoutPaymentTextColor,
+          child: Text(Appconstant.proceedToCheckout,
+              style: AppStyle.checkoutButtonFontContentFontStyle),
+          onPressed: () {
+            _proceedToCheckOutFunction();
+          },
+        ));
   }
 
   Widget _buildRow(ProductListingModel productListingData, int index) {
@@ -97,7 +121,8 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
         children: <Widget>[
           FlatButton(
             color: Appconstant.greenColor,
-            child: Text(Appconstant.addProductToCartText, style:  AppStyle.buttonTextStyle),
+            child: Text(Appconstant.addProductToCartText,
+                style: AppStyle.buttonTextStyle),
             onPressed: () {
               _addProduct(productListingData.title, 1);
             },
@@ -105,7 +130,8 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
           _buildProductOrderCount(productListingData.title),
           FlatButton(
             color: Appconstant.greenColor,
-            child: Text(Appconstant.removeProuctFromCartText, style:  AppStyle.buttonTextStyle),
+            child: Text(Appconstant.removeProuctFromCartText,
+                style: AppStyle.buttonTextStyle),
             onPressed: () {
               _removeProduct(productListingData.title, 1);
             },
@@ -140,7 +166,6 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
 
   Widget _buildProductOrderCount(String title) {
     int count = 0;
-
     if (title != null && _productCount.keys.contains(title)) {
       count = _productCount[title];
     }
@@ -148,7 +173,10 @@ class CartListViewState<T extends StatefulWidget> extends State<T> {
   }
 
   void _proceedToCheckOut() {
-    NavigationHelper.NavigateTo(this.context, CheckoutPage.routeName,
-        CartProduct(_productCount, _productListing, _notificationRenderType, 0));
+    NavigationHelper.NavigateTo(
+        this.context,
+        CheckoutPage.routeName,
+        CartProduct(
+            _productCount, _productListing, _notificationRenderType, 0));
   }
 }
