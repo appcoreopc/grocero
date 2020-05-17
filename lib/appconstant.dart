@@ -29,12 +29,17 @@ class Appconstant {
   static String removeProuctFromCartText = "Remove";
   static String setCurrentLocationText = 'Set current location';
 
+  static String shippingNavBarText = "Shipping info";
+  static String paymentNavBarText = "Payment Method";
+
   static String customerCheckoutTotalText = "Total";
   static String homePageText = "Home";
   static String homePageExploreByCategoryText = "Shop by category";
   static String homePageTopSellingText = "Top sellers";
   static double homePageTitleFontSize = 22;
   static int gridDefaultColumnSize = 2;
+
+  static String noItemInCartMessage = "There is no item in cart.";
 
   static const Color primaryThemeColor = Colors.white;
   static const Color secondaryThemeColor = Color(0xFF);

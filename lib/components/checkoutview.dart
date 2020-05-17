@@ -6,6 +6,7 @@ import 'package:grocero/models/productlistingmodel.dart';
 import 'package:grocero/navigations/navigationhelper.dart';
 import 'package:grocero/payment/makepayment.dart';
 import 'package:grocero/style/appstyle.dart';
+import 'appbar/appBarComponent.dart';
 
 class CheckoutViewState<T extends StatefulWidget> extends State<T> {
   CheckoutViewState(this._cartProduct);
@@ -32,13 +33,9 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
 
     return SafeArea(
         child: Scaffold(
-            appBar: AppBar(
-              iconTheme: IconThemeData(
-                color: Appconstant.greenColor),
-                title: Text("Shipping info",
-                    style: TextStyle(color: Colors.black)),
-                backgroundColor: Appconstant.primaryThemeColor),
-            body: _buildCustomerCheckoutLayout(_customerOrderLists),
+            appBar: AppBarComponent.createAppBarComponent(
+                Appconstant.shippingNavBarText),
+            body: _buildCustomerCheckoutLayout(),
             backgroundColor: Appconstant.allWhite,
             bottomNavigationBar: NavigationHelper().CreateNavigationBar(
                 this.context,
@@ -46,7 +43,24 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
                     _notificationRenderType, pageIndex))));
   }
 
-  Widget _buildCustomerCheckoutLayout(List<ProductListingModel> newsData) {
+  Widget _buildCustomerCheckoutLayout() {
+    if (_validateCount(_productCount)) {
+      return buildBillingTotalLayout();
+    } else {
+      return buildNoItemCartLayout();
+    }
+  }
+
+  bool _validateCount(Map<String, int> source) {
+    for (var element in source.values) {
+      if (element > 0) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  Widget buildBillingTotalLayout() {
     return Column(children: <Widget>[
       Expanded(
           child: Column(
@@ -123,7 +137,7 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
   Column buildChildLayout(String title, String subtitle) {
     return Column(children: <Widget>[
       Padding(padding: EdgeInsets.all(Appconstant.listViewPadding)),
-      Text(subtitle, style: AppStyle.listViewContentGreyFontStyle),
+      Text(subtitle, style: AppStyle.totalAmountContentGreyFontStyle),
     ], crossAxisAlignment: CrossAxisAlignment.start);
   }
 
@@ -158,5 +172,13 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
     setState(() {
       totalAmount = totalAmountToPay;
     });
+  }
+
+  Widget buildNoItemCartLayout() {
+    return Center(
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[Text(Appconstant.noItemInCartMessage, 
+            style: AppStyle.totalAmountContentGreyFontStyle)]));
   }
 }

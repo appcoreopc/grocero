@@ -6,6 +6,7 @@ import 'package:grocero/models/paymentmethod.dart';
 import 'package:grocero/models/productlistingmodel.dart';
 import 'package:grocero/navigations/navigationhelper.dart';
 import 'package:grocero/style/appstyle.dart';
+import 'appbar/appBarComponent.dart';
 
 class MakePaymentPageState<T extends StatefulWidget> extends State<T> {
   MakePaymentPageState(this._cartProduct);
@@ -30,11 +31,8 @@ class MakePaymentPageState<T extends StatefulWidget> extends State<T> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-            appBar: AppBar(
-              iconTheme: IconThemeData(
-                color: Appconstant.greenColor),
-                title: Text("Payment", style: TextStyle(color: Colors.black)),
-                backgroundColor: Appconstant.primaryThemeColor),
+            appBar: AppBarComponent.createAppBarComponent(
+                Appconstant.paymentNavBarText),
             body: _buildCustomerCheckoutLayout(_customerOrderLists),
             backgroundColor: Appconstant.allWhite,
             bottomNavigationBar: NavigationHelper().CreateNavigationBar(
@@ -101,10 +99,7 @@ class MakePaymentPageState<T extends StatefulWidget> extends State<T> {
     ], crossAxisAlignment: CrossAxisAlignment.start);
   }
 
-  void _completePayment() {
-
-
-  }
+  void _completePayment() {}
 
   void _updatePaymentMethod(PaymentMethod paymentMethod) {
     setState(() {
