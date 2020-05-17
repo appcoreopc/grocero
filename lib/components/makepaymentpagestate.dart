@@ -31,6 +31,8 @@ class MakePaymentPageState<T extends StatefulWidget> extends State<T> {
     return SafeArea(
         child: Scaffold(
             appBar: AppBar(
+              iconTheme: IconThemeData(
+                color: Appconstant.greenColor),
                 title: Text("Payment", style: TextStyle(color: Colors.black)),
                 backgroundColor: Appconstant.primaryThemeColor),
             body: _buildCustomerCheckoutLayout(_customerOrderLists),
@@ -62,7 +64,7 @@ class MakePaymentPageState<T extends StatefulWidget> extends State<T> {
             child: Text(Appconstant.completePaymentText,
                 style: AppStyle.checkoutButtonFontContentFontStyle),
             onPressed: () {
-              _completePaymnet();
+              _completePayment();
             },
           ))
     ]);
@@ -99,7 +101,10 @@ class MakePaymentPageState<T extends StatefulWidget> extends State<T> {
     ], crossAxisAlignment: CrossAxisAlignment.start);
   }
 
-  void _completePaymnet() {}
+  void _completePayment() {
+
+
+  }
 
   void _updatePaymentMethod(PaymentMethod paymentMethod) {
     setState(() {

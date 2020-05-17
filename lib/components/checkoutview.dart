@@ -33,6 +33,8 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
     return SafeArea(
         child: Scaffold(
             appBar: AppBar(
+              iconTheme: IconThemeData(
+                color: Appconstant.greenColor),
                 title: Text("Shipping info",
                     style: TextStyle(color: Colors.black)),
                 backgroundColor: Appconstant.primaryThemeColor),
