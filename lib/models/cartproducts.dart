@@ -1,8 +1,10 @@
 import 'package:grocero/cart/notificationRenderType.dart';
+import 'package:grocero/models/customerInfo.dart';
 import 'package:grocero/models/productlistingmodel.dart';
 
 class CartProduct {
-  CartProduct(this.productCount, this.productListings, this.notificationRenderType, this.navigationBarPageIndex);
+  CartProduct(this.productCount, this.productListings,
+      this.notificationRenderType, this.navigationBarPageIndex);
 
   List<ProductListingModel> productListings;
 
@@ -11,9 +13,10 @@ class CartProduct {
 
   NotificationRenderType notificationRenderType;
 
-  // for setting up navigationbar 
+  // for setting up navigationbar
   int navigationBarPageIndex = 0;
 
-  double totalAmount; 
+  double totalAmount;
 
+  CustomerInfo customerInfo;
 }
