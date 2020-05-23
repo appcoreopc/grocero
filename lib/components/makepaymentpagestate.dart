@@ -7,6 +7,7 @@ import 'package:grocero/models/productlistingmodel.dart';
 import 'package:grocero/navigations/navigationhelper.dart';
 import 'package:grocero/style/appstyle.dart';
 import 'appbar/appBarComponent.dart';
+import 'formatters/maskinputformatter.dart';
 
 class MakePaymentPageState<T extends StatefulWidget> extends State<T> {
   MakePaymentPageState(this._cartProduct);
@@ -52,15 +53,17 @@ class MakePaymentPageState<T extends StatefulWidget> extends State<T> {
         children: [
           Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 0)),
           _buildCheckoutRowLayout(
-              "Credit Card", "VISA", "Update", PaymentMethod.creditCard),
-          _buildInputFieldLayout("VISA", "", "Please enter a valid visa card",
-              Icon(Icons.credit_card), _textChanged),
+              "Credit card", "", "", PaymentMethod.creditCard),
+          _buildCreditCardInputFieldLayout("Credit Card", "VISA", "Update",
+              Icon(Icons.credit_card), _creditCardTextChanged),
           _buildInputFieldLayout(
-              "MASTER",
+              "EXPIRY DATE",
               "",
-              "Please enter a valid master card",
-              Icon(Icons.credit_card),
+              "Please enter a valid expiry date",
+              Icon(Icons.calendar_today),
               _textChanged),
+          _buildInputFieldLayout("CVE", "", "Please enter your civ number",
+              Icon(Icons.format_list_numbered), _textChanged),
           _buildCheckoutRowLayout(
               "Cash on delivery", "", "", PaymentMethod.cashOnDelivery)
         ],
@@ -123,6 +126,40 @@ class MakePaymentPageState<T extends StatefulWidget> extends State<T> {
     );
   }
 
+  Widget _buildCreditCardInputFieldLayout(
+      String title,
+      String initialValueTextData,
+      String validationMessage,
+      Icon targetIcon,
+      Function(String) onTextChanged) {
+    return Ink(
+      child: ListTile(
+          subtitle: Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: TextFormField(
+                inputFormatters: [
+                  MaskedTextInputFormatter(
+                    mask: 'xxxx-xxxx-xxxx-xxxx',
+                    separator: '-',
+                  )
+                ],
+                enabled: (_paymentMethod == PaymentMethod.creditCard),
+                initialValue: initialValueTextData,
+                onChanged: onTextChanged,
+                cursorColor: Theme.of(context).cursorColor,
+                decoration: InputDecoration(
+                    hintText: title, labelText: title, icon: targetIcon),
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return validationMessage;
+                  }
+                  return null;
+                },
+              ))),
+      color: Appconstant.allWhite,
+    );
+  }
+
   void _completePayment() {}
 
   void _updatePaymentMethod(PaymentMethod paymentMethod) {
@@ -133,3 +170,5 @@ class MakePaymentPageState<T extends StatefulWidget> extends State<T> {
 
   void _textChanged(String value) {}
 }
+
+void _creditCardTextChanged(String value) {}
