@@ -31,7 +31,9 @@ class Appconstant {
 
   static String shippingNavBarText = "Shipping info";
   static String paymentNavBarText = "Payment Method";
-
+  
+  static String signUpPageTitle = "Sign up";
+  
   static String customerCheckoutTotalText = "Total";
   static String homePageText = "Home";
   static String homePageExploreByCategoryText = "Shop by category";
