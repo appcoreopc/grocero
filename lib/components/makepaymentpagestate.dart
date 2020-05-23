@@ -18,6 +18,7 @@ class MakePaymentPageState<T extends StatefulWidget> extends State<T> {
   int pageIndex =
       2; // *** Keep the selecte page index to cart, as there is no page ****
   PaymentMethod _paymentMethod = PaymentMethod.creditCard;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -29,16 +30,19 @@ class MakePaymentPageState<T extends StatefulWidget> extends State<T> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-            appBar: AppBarComponent.createAppBarComponent(
-                Appconstant.paymentNavBarText),
-            body: _buildCustomerCheckoutLayout(_customerOrderLists),
-            backgroundColor: Appconstant.allWhite,
-            bottomNavigationBar: NavigationHelper().CreateNavigationBar(
-                this.context,
-                CartProduct(_productCount, this._customerOrderLists,
-                    _notificationRenderType, pageIndex))));
+    return Form(
+        key: _formKey,
+        autovalidate: true,
+        child: SafeArea(
+            child: Scaffold(
+                appBar: AppBarComponent.createAppBarComponent(
+                    Appconstant.paymentNavBarText),
+                body: _buildCustomerCheckoutLayout(_customerOrderLists),
+                backgroundColor: Appconstant.allWhite,
+                bottomNavigationBar: NavigationHelper().CreateNavigationBar(
+                    this.context,
+                    CartProduct(_productCount, this._customerOrderLists,
+                        _notificationRenderType, pageIndex)))));
   }
 
   Widget _buildCustomerCheckoutLayout(List<ProductListingModel> newsData) {
@@ -46,8 +50,17 @@ class MakePaymentPageState<T extends StatefulWidget> extends State<T> {
       Expanded(
           child: Column(
         children: [
+          Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 0)),
           _buildCheckoutRowLayout(
-              "Payment method", "VISA", "Update", PaymentMethod.creditCard),
+              "Credit Card", "VISA", "Update", PaymentMethod.creditCard),
+          _buildInputFieldLayout("VISA", "", "Please enter a valid visa card",
+              Icon(Icons.credit_card), _textChanged),
+          _buildInputFieldLayout(
+              "MASTER",
+              "",
+              "Please enter a valid master card",
+              Icon(Icons.credit_card),
+              _textChanged),
           _buildCheckoutRowLayout(
               "Cash on delivery", "", "", PaymentMethod.cashOnDelivery)
         ],
@@ -73,30 +86,41 @@ class MakePaymentPageState<T extends StatefulWidget> extends State<T> {
     return Ink(
       child: ListTile(
         title: Text(title, style: AppStyle.listViewTitleFontStyle),
-        subtitle: Padding(
-            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-            child: _buildChildLayout(title, subtitle)),
         leading: Radio(
             groupValue: _paymentMethod,
             value: paymentMethod,
             onChanged: _updatePaymentMethod),
-        trailing: FlatButton(
-          child: Text(
-            commandString,
-          ),
-          textColor: Appconstant.greenColor,
-          onPressed: () => {},
-        ),
       ),
       color: Appconstant.allWhite,
     );
   }
 
-  Column _buildChildLayout(String title, String subtitle) {
-    return Column(children: <Widget>[
-      Padding(padding: EdgeInsets.all(Appconstant.listViewPadding)),
-      Text(subtitle, style: AppStyle.listViewContentGreyFontStyle),
-    ], crossAxisAlignment: CrossAxisAlignment.start);
+  Widget _buildInputFieldLayout(
+      String title,
+      String initialValueTextData,
+      String validationMessage,
+      Icon targetIcon,
+      Function(String) onTextChanged) {
+    return Ink(
+      child: ListTile(
+          subtitle: Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: TextFormField(
+                enabled: (_paymentMethod == PaymentMethod.creditCard),
+                initialValue: initialValueTextData,
+                onChanged: onTextChanged,
+                cursorColor: Theme.of(context).cursorColor,
+                decoration: InputDecoration(
+                    hintText: title, labelText: title, icon: targetIcon),
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return validationMessage;
+                  }
+                  return null;
+                },
+              ))),
+      color: Appconstant.allWhite,
+    );
   }
 
   void _completePayment() {}
@@ -106,4 +130,6 @@ class MakePaymentPageState<T extends StatefulWidget> extends State<T> {
       _paymentMethod = paymentMethod;
     });
   }
+
+  void _textChanged(String value) {}
 }
