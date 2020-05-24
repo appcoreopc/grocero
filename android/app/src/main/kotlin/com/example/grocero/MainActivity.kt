@@ -1,4 +1,4 @@
-package com.example.grocero
+package com.appcore.grocero
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

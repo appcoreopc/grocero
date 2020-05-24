@@ -1,0 +1,114 @@
+{
+  "project_info": {
+    "project_number": "875589914581",
+    "firebase_url": "https://gcmapp-2bb60.firebaseio.com",
+    "project_id": "gcmapp-2bb60",
+    "storage_bucket": "gcmapp-2bb60.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:875589914581:android:eccd536ded65251d",
+        "android_client_info": {
+          "package_name": "au.com.miacucina.com.foodtour"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "875589914581-5unvr7rnrikfb99f0ibj1rrhjr701ufa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "au.com.miacucina.com.foodtour",
+            "certificate_hash": "e161af9b2c20510315160d684a2b044e957e6f8b"
+          }
+        },
+        {
+          "client_id": "875589914581-62eitu3g3b3dnha4p5mfabdjgkok283m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "au.com.miacucina.com.foodtour",
+            "certificate_hash": "e862f1f887145eaf23e6d245c9851b6f2a70f169"
+          }
+        },
+        {
+          "client_id": "875589914581-ap77i3a1bjmedf51bv2lb6rveagcambq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAd-kxaWd2A9lDV-yCGe_o8kSVUFDVWL9Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "875589914581-ap77i3a1bjmedf51bv2lb6rveagcambq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:875589914581:android:69af27d37c29aca2",
+        "android_client_info": {
+          "package_name": "com.appcore.gcmApp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "875589914581-ap77i3a1bjmedf51bv2lb6rveagcambq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAd-kxaWd2A9lDV-yCGe_o8kSVUFDVWL9Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "875589914581-ap77i3a1bjmedf51bv2lb6rveagcambq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:875589914581:android:04da5163519974ecdc375c",
+        "android_client_info": {
+          "package_name": "com.appcore.grocero"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "875589914581-ap77i3a1bjmedf51bv2lb6rveagcambq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAd-kxaWd2A9lDV-yCGe_o8kSVUFDVWL9Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "875589914581-ap77i3a1bjmedf51bv2lb6rveagcambq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

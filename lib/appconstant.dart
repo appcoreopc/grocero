@@ -33,7 +33,7 @@ class Appconstant {
   static String shippingNavBarText = "Shipping info";
   static String paymentNavBarText = "Payment Method";
   
-  static String signUpPageTitle = "Sign up";
+  static String signUpPageTitle = "Let's get onboard";
   
   static String customerCheckoutTotalText = "Total";
   static String homePageText = "Home";
