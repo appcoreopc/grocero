@@ -1,7 +1,7 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:grocero/appconstant.dart';
 import 'package:grocero/models/usersignup.dart';
+import 'package:grocero/notification/fcmnotification.dart';
 import 'package:grocero/style/appstyle.dart';
 import 'appbar/appBarComponent.dart';
 import 'inputcomponents/passwordtextfield.dart';
@@ -20,35 +20,7 @@ class SignUpPageState<T extends StatefulWidget> extends State<T> {
   @override
   void initState() {
     super.initState();
-
-     _firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: $message");
-        _showItemDialog(message);
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        print("onLaunch: $message");
-        //_navigateToItemDetail(message);
-      },
-      onResume: (Map<String, dynamic> message) async {
-        print("onResume: $message");
-        //_navigateToItemDetail(message);
-      },
-    );
-    _firebaseMessaging.requestNotificationPermissions(
-        const IosNotificationSettings(
-            sound: true, badge: true, alert: true, provisional: true));
-    _firebaseMessaging.onIosSettingsRegistered
-        .listen((IosNotificationSettings settings) {
-      print("Settings registered: $settings");
-    });
-    _firebaseMessaging.getToken().then((String token) {
-      assert(token != null);
-      setState(() {
-        //_homeScreenText = "Push Messaging token: $token";
-      });
-     
-    });
+    FcmNotification().RegisterNotificationHandler(_showItemDialog);
   }
 
   @override
@@ -210,12 +182,6 @@ class SignUpPageState<T extends StatefulWidget> extends State<T> {
   }
 
   void _showItemDialog(Map<String, dynamic> message) {
-   // It does show data /// \
-   
+    // It does show data ///
   }
-
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-
- 
-
 }
