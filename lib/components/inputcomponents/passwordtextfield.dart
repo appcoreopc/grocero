@@ -10,6 +10,7 @@ class PasswordField extends StatefulWidget {
     this.onSaved,
     this.validator,
     this.onFieldSubmitted,
+    this.focusNode
   });
 
   final Key fieldKey;
@@ -19,6 +20,7 @@ class PasswordField extends StatefulWidget {
   final FormFieldSetter<String> onSaved;
   final FormFieldValidator<String> validator;
   final ValueChanged<String> onFieldSubmitted;
+  final FocusNode focusNode; 
 
   @override
   _PasswordFieldState createState() => _PasswordFieldState();
@@ -30,6 +32,7 @@ class _PasswordFieldState extends State<PasswordField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      focusNode: widget.focusNode,
       key: widget.fieldKey,
       obscureText: _obscureText,
       cursorColor: Theme.of(context).cursorColor,

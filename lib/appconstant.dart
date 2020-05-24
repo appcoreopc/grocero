@@ -19,6 +19,7 @@ class Appconstant {
   static String addToCartText = "Add to cart";
   static String makePaymentText = "Make a payment";
   static String completePaymentText = "Complete order";
+  static String signUpText = "Sign up";
   static String customerCheckoutNameText = "Customer Name";
   static String customerCheckoutDeliveryToText = "Delivery To";
   static String customerCheckoutPhoneText = "Contact";
@@ -51,4 +52,22 @@ class Appconstant {
   static Color allGreyColor = ColorUtil.hexcolor("#ABB0B6");
   static Color allBlack = ColorUtil.hexcolor("#181818");
   static Color allWhite = ColorUtil.hexcolor("#FFFFFF");
+
+  static String enterValidPasswordMessage = "Please enter a valid password";
+  static String provideValidValueMessage = "Please provide a value";
+  static String ensurePasswordAreTheSameMessage = "Please ensure password are the same";
+
+  static String usernameTextboxTitle = "Username";
+  static String usernameValidationMessage = "Please provide a username";
+
+  static String emailTitle = "Email";
+  static String emailValidationMessage = "Please provide a valid email address";
+
+  static String passwordTitle = "Password";
+  static String passwordValidationMessage = "Please provide a password";
+
+  static String confirmPasswordTitle = "Confirm password";
+  static String confirmPasswordValidationMessage = "Please ensure your password are the same";
+
+
 }
