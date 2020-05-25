@@ -1,9 +1,10 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class FcmNotification {
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
-  void RegisterNotificationHandler(
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+ 
+  void registerNotificationHandler(
       Function(Map<String, dynamic>) notificationHandler) {
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
@@ -29,10 +30,10 @@ class FcmNotification {
 
     _firebaseMessaging.getToken().then((String token) {
       assert(token != null);
-
-      ///setState(() {
-      //_homeScreenText = "Push Messaging token: $token";
-      // });
     });
+  }
+
+  void registerInAppMessagingHandler() {
+
   }
 }

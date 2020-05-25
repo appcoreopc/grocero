@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:grocero/cart/cartpage.dart';
 import 'package:grocero/cart/notificationRenderType.dart';
+import 'package:grocero/components/grid/gridProductItem.dart';
 import 'package:grocero/home/homepage.dart';
 import 'package:grocero/models/cartproducts.dart';
 import 'package:grocero/models/productcategory.dart';
 import 'package:grocero/models/productlistingmodel.dart';
 import 'package:grocero/navigations/navigationhelper.dart';
 import 'package:grocero/navigations/route.dart';
+import 'package:grocero/notification/fcmnotification.dart';
 import 'package:grocero/products/productlistpage.dart';
 import 'package:grocero/services/mock/mockmarkerservice.dart';
 import 'package:grocero/style/appstyle.dart';
+import 'package:grocero/util/textTruncator.dart';
 import '../Appconstant.dart';
+import 'grid/gridListType.dart';
 
 class HomePageState extends State<HomePage> {
   Future<List<ProductListingModel>> _futureDataSource;
@@ -21,6 +25,12 @@ class HomePageState extends State<HomePage> {
   BuildContext bodybc;
   BuildContext globalbc;
   final navigatorKey = GlobalKey<NavigatorState>();
+
+  @override
+  void initState() {
+    super.initState();
+    FcmNotification().registerNotificationHandler(_showItemDialog);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +54,7 @@ class HomePageState extends State<HomePage> {
                 ///////////////////////////////////////////////////
                 bodybc = _context;
                 _productListing = snapshot.data;
-                return _buildTopSellingLayout(_productListing);
+                return _buildHomepageLayout(_productListing);
               } else if (snapshot.hasError) {
                 return Text("${snapshot.error}");
               }
@@ -55,13 +65,12 @@ class HomePageState extends State<HomePage> {
               productCount,
               _productListing,
               NotificationRenderType.none,
-              pageIndex))
-          ),
+              pageIndex))),
       onGenerateRoute: AppRoutes.setupRoutes,
     );
   }
 
-  Widget _buildTopSellingLayout(List<ProductListingModel> productLists) {
+  Widget _buildHomepageLayout(List<ProductListingModel> productLists) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -75,27 +84,9 @@ class HomePageState extends State<HomePage> {
                   textAlign: TextAlign.left,
                   style: TextStyle(fontSize: Appconstant.homePageTitleFontSize),
                 ))),
-        Padding(padding: EdgeInsets.all(4)),
-        Expanded(
-          child: ListView.builder(
-            shrinkWrap: true,
-            scrollDirection: Axis.horizontal,
-            itemCount: productLists.length,
-            itemBuilder: (BuildContext context, int index) => Card(
-              child: Center(
-                  child: Column(children: <Widget>[
-                Image.network(productLists[index].urlToImage,
-                    height: 160, width: 180),
-                Text(productLists[index].title),
-                Text(productLists[index].description,
-                    style: TextStyle(
-                        color: Appconstant.textColorSecondaryTextColor)),
-                Padding(padding: EdgeInsets.fromLTRB(0, 2, 0, 4)),
-              ])),
-            ),
-          ),
-        ),
-        Padding(padding: EdgeInsets.all(8)),
+        _buildPaddingWidget(4),
+        _buildTopSellersLayout(productLists),
+        _buildPaddingWidget(10),
         Align(
             alignment: Alignment.centerLeft,
             child: Container(
@@ -128,22 +119,17 @@ class HomePageState extends State<HomePage> {
     ], crossAxisAlignment: CrossAxisAlignment.start);
   }
 
-  Widget _buildCategoryListView(List<ProductCategory> category) {
+  Widget _buildCategoryListView(List<ProductCategory> productCategories) {
     return GridView.count(
-      crossAxisCount: Appconstant.gridDefaultColumnSize,
-      children: List.generate(category.length, (index) {
-        return Center(
-            child: Column(children: <Widget>[
-          Padding(padding: EdgeInsets.all(10)),
-          Text(
-            category[index].title,
-            style: Theme.of(context).textTheme.title,
-          ),
-          Padding(padding: EdgeInsets.all(10)),
-          Image.network(category[index].imageUrl, height: 100, width: 100)
-        ]));
-      }),
-    );
+        crossAxisCount: 2,
+        mainAxisSpacing: 8,
+        crossAxisSpacing: 8,
+        padding: const EdgeInsets.all(8),
+        childAspectRatio: 1,
+        children: productCategories.map((category) {
+          return GridDemoPhotoItem(
+              photo: category, tileStyle: GridListType.footer);
+        }).toList());
   }
 
   Widget createBottomNavigationBar(CartProduct cartProduct) {
@@ -200,6 +186,40 @@ class HomePageState extends State<HomePage> {
                 context, CartPage.routeName, cartProduct)
           }
       },
+    );
+  }
+
+  Widget _buildPaddingWidget(double paddingValue) {
+    return Padding(padding: EdgeInsets.all(paddingValue));
+  }
+
+  void _showItemDialog(Map<String, dynamic> message) {
+    Scaffold.of(context).showSnackBar(
+        const SnackBar(content: Text("Triggering event: chicken_event")));
+    // It does show data ///
+  }
+
+  Widget _buildTopSellersLayout(List<ProductListingModel> productLists) {
+    return Expanded(
+      child: ListView.builder(
+        shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
+        itemCount: productLists.length,
+        itemBuilder: (BuildContext context, int index) => Card(
+          child: Center(
+              child: Column(children: <Widget>[
+            Image.network(productLists[index].urlToImage,
+                height: 160, width: 180),
+            Text(TextUtil.getLayoutFriendlyText(productLists[index].title, 15)),
+            Text(
+                TextUtil.getLayoutFriendlyText(
+                    productLists[index].description, 15),
+                style:
+                    TextStyle(color: Appconstant.textColorSecondaryTextColor)),
+            Padding(padding: EdgeInsets.fromLTRB(0, 2, 0, 4)),
+          ])),
+        ),
+      ),
     );
   }
 }

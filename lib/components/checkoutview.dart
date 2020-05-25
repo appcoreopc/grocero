@@ -37,7 +37,7 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
 
   @override
   Widget build(BuildContext context) {
-    calculateTotal();
+    _calculateTotal();
 
     return Form(
         key: _formKey,
@@ -58,7 +58,7 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
     if (_validateCount(_productCount)) {
       return buildBillingTotalLayout();
     } else {
-      return buildNoItemCartLayout();
+      return _buildNoItemCartLayout();
     }
   }
 
@@ -109,10 +109,10 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
           _buildInputFieldLayout(
               Appconstant.customerCheckoutAddressText,
               "123 Namsan Close",
-              "Please enter an address",
+              "Please enter shipping address address",
               Icon(Icons.local_shipping),
               _addresssChanged),
-
+          _buildDeliveryTimeLayout(),
           ////////////// Delivery time ////////
 
           _buildTotalCheckoutRowLayout(Appconstant.customerCheckoutTotalText,
@@ -169,7 +169,7 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
         title: Text(title, style: AppStyle.listViewTitleFontStyle),
         subtitle: Padding(
             padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-            child: buildChildLayout(title, subtitle)),
+            child: _buildChildLayout(title, subtitle)),
         trailing: FlatButton(
           child: Text(
             commandString,
@@ -182,14 +182,33 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
     );
   }
 
-  Column buildChildLayout(String title, String subtitle) {
-    return Column(children: <Widget>[
-      Padding(padding: EdgeInsets.all(Appconstant.listViewPadding)),
-      Text(subtitle, style: AppStyle.totalAmountContentGreyFontStyle),
-    ], crossAxisAlignment: CrossAxisAlignment.start);
+  List<bool> isSelected;
+
+  Widget _buildDeliveryTimeLayout() {
+    return ToggleButtons(
+      children: <Widget>[
+        Icon(Icons.timer),
+        Icon(Icons.timer_10),
+        Icon(Icons.timer_3),
+      ],
+      onPressed: (int index) {
+        setState(() {
+          for (int buttonIndex = 0;
+              buttonIndex < isSelected.length;
+              buttonIndex++) {
+            if (buttonIndex == index) {
+              isSelected[buttonIndex] = !isSelected[buttonIndex];
+            } else {
+              isSelected[buttonIndex] = false;
+            }
+          }
+        });
+      },
+      isSelected: isSelected,
+    );
   }
 
-  Column buildTotalAmountChildLayout(String title, String subtitle) {
+  Column _buildChildLayout(String title, String subtitle) {
     return Column(children: <Widget>[
       Padding(padding: EdgeInsets.all(Appconstant.listViewPadding)),
       Text(subtitle, style: AppStyle.totalAmountContentGreyFontStyle),
@@ -203,7 +222,7 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
     }
   }
 
-  void calculateTotal() {
+  void _calculateTotal() {
     double totalAmountToPay = 0;
     for (var element in _productCount.entries) {
       if (_customerOrderLists != null && _customerOrderLists.isNotEmpty) {
@@ -224,7 +243,7 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
     });
   }
 
-  Widget buildNoItemCartLayout() {
+  Widget _buildNoItemCartLayout() {
     return Center(
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

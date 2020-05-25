@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grocero/appconstant.dart';
 import 'package:grocero/models/usersignup.dart';
-import 'package:grocero/notification/fcmnotification.dart';
 import 'package:grocero/style/appstyle.dart';
 import 'appbar/appBarComponent.dart';
 import 'inputcomponents/passwordtextfield.dart';
@@ -16,12 +15,6 @@ class SignUpPageState<T extends StatefulWidget> extends State<T> {
 
   UserSignUpModel userSignUp = UserSignUpModel();
   FocusNode passwordFocus;
-
-  @override
-  void initState() {
-    super.initState();
-    FcmNotification().RegisterNotificationHandler(_showItemDialog);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -179,9 +172,5 @@ class SignUpPageState<T extends StatefulWidget> extends State<T> {
       return Appconstant.ensurePasswordAreTheSameMessage;
     }
     return null;
-  }
-
-  void _showItemDialog(Map<String, dynamic> message) {
-    // It does show data ///
   }
 }
