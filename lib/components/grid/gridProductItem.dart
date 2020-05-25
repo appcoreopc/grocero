@@ -3,27 +3,30 @@ import 'package:grocero/models/productcategory.dart';
 import 'gridListType.dart';
 import 'gridTitleText.dart';
 
-
-class GridDemoPhotoItem extends StatelessWidget {
-  GridDemoPhotoItem({
-    Key key,
-    @required this.photo,
-    @required this.tileStyle,
-  }) : super(key: key);
+class GridCategoryItem extends StatelessWidget {
+  GridCategoryItem(
+      {Key key,
+      @required this.photo,
+      @required this.tileStyle,
+      this.onTapFunction})
+      : super(key: key);
 
   final ProductCategory photo;
   final GridListType tileStyle;
+  final Function onTapFunction;
 
   @override
   Widget build(BuildContext context) {
     final Widget image = Material(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-      clipBehavior: Clip.antiAlias,
-      child: Image.network(
-        photo.imageUrl,
-        fit: BoxFit.cover,
-      ),
-    );
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+        clipBehavior: Clip.antiAlias,
+        child: InkResponse(
+            child: Image.network(
+              photo.imageUrl,
+              fit: BoxFit.cover,
+            ),
+            onTap: onTapFunction)
+        );
 
     switch (tileStyle) {
       case GridListType.imageOnly:

@@ -182,7 +182,7 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
     );
   }
 
-  List<bool> isSelected;
+  List<bool> isSelected = [false, false, false];
 
   Widget _buildDeliveryTimeLayout() {
     return ToggleButtons(

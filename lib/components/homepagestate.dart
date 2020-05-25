@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grocero/cart/cartpage.dart';
 import 'package:grocero/cart/notificationRenderType.dart';
+import 'package:grocero/components/appbar/appBarComponent.dart';
 import 'package:grocero/components/grid/gridProductItem.dart';
 import 'package:grocero/home/homepage.dart';
 import 'package:grocero/models/cartproducts.dart';
@@ -22,7 +23,8 @@ class HomePageState extends State<HomePage> {
   List<ProductListingModel> _productListing;
   Future<List<ProductCategory>> _productCategories;
   int pageIndex = 0;
-  BuildContext bodybc;
+  BuildContext homeBuildContext;
+
   BuildContext globalbc;
   final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -39,10 +41,7 @@ class HomePageState extends State<HomePage> {
 
     return MaterialApp(
       home: Scaffold(
-          appBar: AppBar(
-              title: Text(Appconstant.homePageText,
-                  style: TextStyle(color: Colors.black)),
-              backgroundColor: Appconstant.primaryThemeColor),
+          appBar: AppBarComponent.createAppBarComponent("Home"),
           body: SafeArea(
               child: Scaffold(
                   body: FutureBuilder<List<ProductListingModel>>(
@@ -52,7 +51,7 @@ class HomePageState extends State<HomePage> {
                 ///////////////////////////////////////////////////
                 // Noticed the build context being assigned here //
                 ///////////////////////////////////////////////////
-                bodybc = _context;
+                homeBuildContext = _context;
                 _productListing = snapshot.data;
                 return _buildHomepageLayout(_productListing);
               } else if (snapshot.hasError) {
@@ -74,7 +73,7 @@ class HomePageState extends State<HomePage> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Padding(padding: EdgeInsets.all(10)),
+        _buildPaddingWidget(10),
         Align(
             alignment: Alignment.centerLeft,
             child: Container(
@@ -82,7 +81,9 @@ class HomePageState extends State<HomePage> {
                 child: Text(
                   Appconstant.homePageTopSellingText,
                   textAlign: TextAlign.left,
-                  style: TextStyle(fontSize: Appconstant.homePageTitleFontSize),
+                  style: TextStyle(
+                      fontSize: Appconstant.homePageTitleFontSize,
+                      color: Appconstant.greenColor),
                 ))),
         _buildPaddingWidget(4),
         _buildTopSellersLayout(productLists),
@@ -93,7 +94,9 @@ class HomePageState extends State<HomePage> {
                 padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
                 child: Text(
                   Appconstant.homePageExploreByCategoryText,
-                  style: TextStyle(fontSize: Appconstant.homePageTitleFontSize),
+                  style: TextStyle(
+                      fontSize: Appconstant.homePageTitleFontSize,
+                      color: Appconstant.greenColor),
                 ))),
         Expanded(
             child: FutureBuilder<List<ProductCategory>>(
@@ -127,12 +130,22 @@ class HomePageState extends State<HomePage> {
         padding: const EdgeInsets.all(8),
         childAspectRatio: 1,
         children: productCategories.map((category) {
-          return GridDemoPhotoItem(
-              photo: category, tileStyle: GridListType.footer);
+          return GridCategoryItem(
+              photo: category, tileStyle: GridListType.footer, 
+              onTapFunction: () {
+
+                var cartProduct = CartProduct(null, null, NotificationRenderType.none, 1);
+                cartProduct.browseCategory = category.id; 
+
+                NavigationHelper.NavigateTo(
+                homeBuildContext, ProductListingPage.routeName, cartProduct);
+
+              });
         }).toList());
   }
 
   Widget createBottomNavigationBar(CartProduct cartProduct) {
+
     Color homeColor = Appconstant.allGreyColor;
     Color exploreColor = Appconstant.allGreyColor;
     Color cartColor = Appconstant.allGreyColor;
@@ -174,16 +187,16 @@ class HomePageState extends State<HomePage> {
       selectedItemColor: Appconstant.greenColor,
       onTap: (idx) => {
         if (idx == 0)
-          {NavigationHelper.NavigateTo(bodybc, HomePage.routeName, null)}
+          {NavigationHelper.NavigateTo(homeBuildContext, HomePage.routeName, null)}
         else if (idx == 1)
           {
             NavigationHelper.NavigateTo(
-                bodybc, ProductListingPage.routeName, cartProduct)
+                homeBuildContext, ProductListingPage.routeName, cartProduct)
           }
         else if (idx == 2)
           {
             NavigationHelper.NavigateTo(
-                context, CartPage.routeName, cartProduct)
+                homeBuildContext, CartPage.routeName, cartProduct)
           }
       },
     );
@@ -194,7 +207,7 @@ class HomePageState extends State<HomePage> {
   }
 
   void _showItemDialog(Map<String, dynamic> message) {
-    Scaffold.of(context).showSnackBar(
+    Scaffold.of(homeBuildContext).showSnackBar(
         const SnackBar(content: Text("Triggering event: chicken_event")));
     // It does show data ///
   }

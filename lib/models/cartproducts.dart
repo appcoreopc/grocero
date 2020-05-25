@@ -3,6 +3,7 @@ import 'package:grocero/models/customerInfo.dart';
 import 'package:grocero/models/productlistingmodel.dart';
 
 class CartProduct {
+  
   CartProduct(this.productCount, this.productListings,
       this.notificationRenderType, this.navigationBarPageIndex);
 
@@ -19,4 +20,6 @@ class CartProduct {
   double totalAmount;
 
   CustomerInfo customerInfo;
+
+  String browseCategory;
 }
