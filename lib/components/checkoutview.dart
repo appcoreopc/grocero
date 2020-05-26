@@ -162,14 +162,11 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
     );
   }
 
-  Widget _buildTotalCheckoutRowLayout(
-      String title, String subtitle, String commandString) {
-    return Ink(
-      child: ListTile(
-        title: Text(title + ":" + subtitle, style: AppStyle.bigTotalStyle),
-      ),
-      color: Appconstant.allWhite,
-    );
+  Widget _buildTotalCheckoutRowLayout(String title, String subtitle, String commandString) {
+    return Column(children: <Widget>[
+      PaddingComponent.buildEqualPaddingWidget(10),
+      Text(title + " : \$ " + subtitle, style: AppStyle.bigTotalStyle)
+    ]);
   }
 
   var _deliveryTimeSelected = <bool>[false, false, false, false, false, false];
@@ -214,12 +211,12 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
     );
   }
 
-  Column _buildChildLayout(String title, String subtitle) {
-    return Column(children: <Widget>[
-      Padding(padding: EdgeInsets.all(Appconstant.listViewPadding)),
-      Text(subtitle, style: AppStyle.totalAmountContentGreyFontStyle),
-    ], crossAxisAlignment: CrossAxisAlignment.start);
-  }
+  // Column _buildChildLayout(String title, String subtitle) {
+  //   return Column(children: <Widget>[
+  //     Padding(padding: EdgeInsets.all(Appconstant.listViewPadding)),
+  //     Text(subtitle, style: AppStyle.totalAmountContentGreyFontStyle),
+  //   ], crossAxisAlignment: CrossAxisAlignment.start);
+  // }
 
   void _makePayment() {
     if (_formKey.currentState.validate()) {
