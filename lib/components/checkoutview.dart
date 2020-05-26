@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grocero/appconstant.dart';
 import 'package:grocero/cart/notificationRenderType.dart';
+import 'package:grocero/components/padding/paddingComponent.dart';
 import 'package:grocero/models/cartproducts.dart';
 import 'package:grocero/models/customerInfo.dart';
 import 'package:grocero/models/productlistingmodel.dart';
@@ -114,7 +115,6 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
               _addresssChanged),
           _buildDeliveryTimeLayout(),
           ////////////// Delivery time ////////
-
           _buildTotalCheckoutRowLayout(Appconstant.customerCheckoutTotalText,
               totalAmount.toString(), ""),
         ],
@@ -166,45 +166,51 @@ class CheckoutViewState<T extends StatefulWidget> extends State<T> {
       String title, String subtitle, String commandString) {
     return Ink(
       child: ListTile(
-        title: Text(title, style: AppStyle.listViewTitleFontStyle),
-        subtitle: Padding(
-            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-            child: _buildChildLayout(title, subtitle)),
-        trailing: FlatButton(
-          child: Text(
-            commandString,
-          ),
-          textColor: Appconstant.greenColor,
-          onPressed: () => {},
-        ),
+        title: Text(title + ":" + subtitle, style: AppStyle.bigTotalStyle),
       ),
       color: Appconstant.allWhite,
     );
   }
 
-  List<bool> isSelected = [false, false, false];
+  var _deliveryTimeSelected = <bool>[false, false, false, false, false, false];
 
   Widget _buildDeliveryTimeLayout() {
-    return ToggleButtons(
+    return Column(
       children: <Widget>[
-        Icon(Icons.timer),
-        Icon(Icons.timer_10),
-        Icon(Icons.timer_3),
+        PaddingComponent.buildEqualPaddingWidget(10),
+        _buildAvailableTimeLayout(),
+        PaddingComponent.buildEqualPaddingWidget(4),
+      ],
+    );
+  }
+
+  Widget _buildAvailableTimeLayout() {
+    return ToggleButtons(
+      selectedColor: Appconstant.allWhite,
+      fillColor: Appconstant.greenColor,
+      children: <Widget>[
+        Text("10:00"),
+        Text("12:00"),
+        Text("14:00"),
+        Text("12:00"),
+        Text("14:00"),
+        Text("16:00"),
       ],
       onPressed: (int index) {
         setState(() {
           for (int buttonIndex = 0;
-              buttonIndex < isSelected.length;
+              buttonIndex < _deliveryTimeSelected.length;
               buttonIndex++) {
             if (buttonIndex == index) {
-              isSelected[buttonIndex] = !isSelected[buttonIndex];
+              _deliveryTimeSelected[buttonIndex] =
+                  !_deliveryTimeSelected[buttonIndex];
             } else {
-              isSelected[buttonIndex] = false;
+              _deliveryTimeSelected[buttonIndex] = false;
             }
           }
         });
       },
-      isSelected: isSelected,
+      isSelected: _deliveryTimeSelected,
     );
   }
 
