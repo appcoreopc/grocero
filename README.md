@@ -13,9 +13,8 @@ A mobile shopping app.
 ![alt text](https://github.com/appcoreopc/grocero/blob/master/3.png)
 
 
-![alt text](https://github.com/appcoreopc/grocero/blob/master/4.png){:height="220px" width="80px"}
+<img src="https://github.com/appcoreopc/grocero/blob/master/4.png" width="48"/>
 
-
-![alt text](https://github.com/appcoreopc/grocero/blob/master/5.png){:height="220px" width="80px"}
+<img src="https://github.com/appcoreopc/grocero/blob/master/5.png" width="48"/>
 
 
